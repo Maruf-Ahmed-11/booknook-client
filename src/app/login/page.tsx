@@ -12,12 +12,34 @@ export default function LoginPage() {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
+    // 1. Helper function to get the JWT from Express
+    const fetchAndStoreJWT = async (userEmail: string) => {
+        try {
+            const res = await fetch("http://localhost:8000/jwt", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email: userEmail }),
+            });
+            const data = await res.json();
+            if (data.token) {
+                localStorage.setItem("access-token", data.token);
+            }
+        } catch (error) {
+            console.error("Failed to fetch Express JWT:", error);
+        }
+    };
+
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
 
         await authClient.signIn.email({ email, password }, {
-            onSuccess: () => {
+            onSuccess: async () => {
+                // 2. Fetch and store the token before redirecting
+                await fetchAndStoreJWT(email);
+
                 toast.success("Logged in successfully!");
                 router.push("/");
             },
