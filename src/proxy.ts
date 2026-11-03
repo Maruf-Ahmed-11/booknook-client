@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-// Added "default" to the export to satisfy the new proxy convention
 export default async function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
@@ -9,13 +8,13 @@ export default async function proxy(request: NextRequest) {
     const isProtectedRoute = protectedRoutes.some((route) => pathname.startsWith(route));
 
     if (isProtectedRoute) {
-        const response = await fetch(`${request.nextUrl.origin}/api/auth/get-session`, {
-            headers: {
-                cookie: request.headers.get("cookie") || "",
-            },
-        });
+        // Check for the BetterAuth session cookie directly instead of fetching the API
+        // This prevents the Next.js dev server from deadlocking and hanging on refresh
+        const hasSession = request.cookies.getAll().some(cookie =>
+            cookie.name.includes("better-auth.session_token")
+        );
 
-        if (!response.ok) {
+        if (!hasSession) {
             return NextResponse.redirect(new URL("/login", request.url));
         }
     }
