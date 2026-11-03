@@ -20,5 +20,15 @@ export const auth = betterAuth({
             strategy: 'jwt',
             maxAge: 7 * 24 * 60 * 60
         }
-    }
+    },
+    socialProviders: {
+        google: {
+            clientId: process.env.GOOGLE_CLIENT_ID as string,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+        },
+        github: {
+            clientId: process.env.GITHUB_CLIENT_ID as string,
+            clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+        },
+    },
 });
