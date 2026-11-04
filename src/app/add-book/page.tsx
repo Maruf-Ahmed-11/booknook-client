@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import Image from "next/image";
 import { authClient } from "@/lib/auth-client";
 
 export const BOOK_CATEGORIES = [
@@ -47,7 +48,14 @@ export default function AddBookPage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (!formData.image.trim()) {
+            toast.error("Please enter a valid Cover Image URL");
+            return;
+        }
+
         setLoading(true);
+        const toastId = toast.loading("Recording volume into MongoDB database...");
 
         try {
             const token = localStorage.getItem("access-token");
@@ -66,15 +74,15 @@ export default function AddBookPage() {
             });
 
             if (res.ok) {
-                toast.success("Book added to library successfully!");
+                toast.success("Book successfully archived in MongoDB database!", { id: toastId });
                 router.push("/my-books");
                 router.refresh();
             } else {
                 const errorData = await res.json();
-                toast.error(errorData.message || "Failed to add book");
+                toast.error(errorData.message || "Failed to add book to MongoDB database", { id: toastId });
             }
         } catch (error) {
-            toast.error("An error occurred while adding the book");
+            toast.error("An error occurred while connecting to database", { id: toastId });
             console.error(error);
         } finally {
             setLoading(false);
@@ -235,17 +243,43 @@ export default function AddBookPage() {
                             </div>
                         </div>
 
+                        {/* Direct Cover Image URL Field */}
                         <div>
-                            <label className="mb-1.5 block text-xs font-mono font-semibold uppercase tracking-wider text-zinc-400">Cover Image URL</label>
+                            <label className="mb-1.5 block text-xs font-mono font-semibold uppercase tracking-wider text-zinc-400">
+                                Cover Image URL
+                            </label>
                             <input
                                 type="url"
                                 name="image"
                                 required
-                                placeholder="https://example.com/book-cover.jpg"
+                                placeholder="https://images.unsplash.com/photo-..."
                                 className="w-full rounded-xl bg-[#18181b] border border-zinc-800 p-3 text-sm text-white placeholder-zinc-500 outline-none transition-all focus:border-[#e50914] focus:ring-1 focus:ring-[#e50914]"
                                 value={formData.image}
                                 onChange={handleChange}
                             />
+
+                            {/* Live Thumbnail Preview if valid image URL */}
+                            {formData.image.trim() && (
+                                <div className="mt-3 flex items-center gap-3 p-3 rounded-xl bg-[#141418] border border-zinc-800">
+                                    <div className="relative h-14 w-10 rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800 shrink-0">
+                                        <Image
+                                            src={formData.image}
+                                            alt="Cover preview"
+                                            fill
+                                            className="object-cover"
+                                            unoptimized
+                                        />
+                                    </div>
+                                    <div className="overflow-hidden">
+                                        <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider block">
+                                            Cover Preview
+                                        </span>
+                                        <p className="text-xs font-mono text-zinc-300 truncate mt-0.5">
+                                            {formData.image}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
                         <div>
@@ -266,7 +300,7 @@ export default function AddBookPage() {
                             disabled={loading}
                             className="mt-4 w-full rounded-xl bg-[#e50914] py-3.5 text-xs font-bold uppercase tracking-widest text-white transition-all hover:bg-[#c90812] hover:shadow-[0_0_20px_rgba(229,9,20,0.4)] disabled:opacity-50 cursor-pointer"
                         >
-                            {loading ? "Adding to Archive..." : "Add Book to Library"}
+                            {loading ? "Recording in MongoDB..." : "Add Book to Library"}
                         </button>
                     </form>
                 </div>
