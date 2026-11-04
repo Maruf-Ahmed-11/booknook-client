@@ -87,7 +87,7 @@ export default function Navbar() {
                         <>
                             <Link href="/add-book" className="hover:text-white transition-colors">Add Book</Link>
                             <Link href="/my-books" className="hover:text-white transition-colors">My Books</Link>
-                            <Link href="/my-borrows" className="hover:text-white transition-colors">Borrowed Books</Link>
+                            <Link href="/my-borrows" className="hover:text-white transition-colors">My Borrows</Link>
                         </>
                     )}
                 </nav>
