@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
@@ -10,6 +10,8 @@ import Image from "next/image";
 export default function Navbar() {
     const { data: session, isPending } = authClient.useSession();
     const router = useRouter();
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
     // Automatically sync Express JWT to localStorage for Google/GitHub/Email logins
     useEffect(() => {
@@ -36,7 +38,21 @@ export default function Navbar() {
         syncJWT();
     }, [session]);
 
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsDropdownOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
     const handleLogout = async () => {
+        setIsDropdownOpen(false);
         await authClient.signOut({
             fetchOptions: {
                 onSuccess: () => {
@@ -79,32 +95,97 @@ export default function Navbar() {
                 {/* Auth Actions */}
                 <div className="flex items-center gap-4">
                     {isPending ? (
-                        <div className="h-8 w-20 animate-pulse rounded-lg bg-zinc-800"></div>
+                        <div className="h-9 w-9 animate-pulse rounded-full bg-zinc-800"></div>
                     ) : session?.user ? (
-                        <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-2.5">
+                        /* User Photo with Dropdown */
+                        <div className="relative" ref={dropdownRef}>
+                            <button
+                                onClick={() => setIsDropdownOpen(prev => !prev)}
+                                aria-label="Toggle user profile menu"
+                                className="flex items-center gap-2 rounded-full p-0.5 border-2 border-zinc-700/80 hover:border-[#e50914] transition-all focus:outline-none focus:ring-2 focus:ring-[#e50914] cursor-pointer"
+                            >
                                 {session.user.image ? (
                                     <Image
                                         src={session.user.image}
-                                        alt="Avatar"
-                                        width={32}
-                                        height={32}
+                                        alt={session.user.name || "User Avatar"}
+                                        width={34}
+                                        height={34}
                                         unoptimized
-                                        className="h-8 w-8 rounded-full object-cover border border-zinc-700"
+                                        className="h-8 w-8 rounded-full object-cover"
                                     />
                                 ) : (
-                                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red-950/60 border border-red-900/60 text-xs font-bold text-red-400">
+                                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red-950/80 text-xs font-bold text-red-300 font-mono">
                                         {session.user.name?.[0] || "U"}
                                     </div>
                                 )}
-                                <span className="hidden text-sm font-medium text-zinc-300 lg:inline-block">{session.user.name}</span>
-                            </div>
-                            <button
-                                onClick={handleLogout}
-                                className="rounded-xl border border-zinc-800 px-4 py-2 text-sm font-semibold text-zinc-300 transition-all hover:bg-zinc-900 hover:text-red-500 hover:border-red-900/40 cursor-pointer"
-                            >
-                                Logout
                             </button>
+
+                            {/* Dropdown Menu */}
+                            {isDropdownOpen && (
+                                <div className="absolute right-0 mt-3 w-64 rounded-2xl bg-[#0d0d10] border border-zinc-800 p-2 shadow-[0_15px_50px_rgba(0,0,0,0.9)] z-50 animate-in fade-in zoom-in-95 duration-150">
+                                    {/* User Name & Email Header */}
+                                    <div className="px-3 py-2.5 border-b border-zinc-800/80">
+                                        <p className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-[#e50914] mb-1">
+                                            ACTIVE ACCOUNT
+                                        </p>
+                                        <p className="text-sm font-bold text-white truncate font-sans">
+                                            {session.user.name}
+                                        </p>
+                                        <p className="text-xs text-zinc-400 font-mono truncate mt-0.5">
+                                            {session.user.email}
+                                        </p>
+                                    </div>
+
+                                    {/* Links */}
+                                    <div className="py-2 space-y-1">
+                                        <Link
+                                            href="/profile"
+                                            onClick={() => setIsDropdownOpen(false)}
+                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-zinc-800/60 transition-colors"
+                                        >
+                                            <svg className="w-4 h-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                            </svg>
+                                            My Profile
+                                        </Link>
+
+                                        <Link
+                                            href="/my-books"
+                                            onClick={() => setIsDropdownOpen(false)}
+                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-zinc-800/60 transition-colors"
+                                        >
+                                            <svg className="w-4 h-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                            </svg>
+                                            My Books
+                                        </Link>
+
+                                        <Link
+                                            href="/my-borrows"
+                                            onClick={() => setIsDropdownOpen(false)}
+                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-zinc-800/60 transition-colors"
+                                        >
+                                            <svg className="w-4 h-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                            </svg>
+                                            Borrowed Books
+                                        </Link>
+                                    </div>
+
+                                    {/* Logout Action */}
+                                    <div className="pt-2 border-t border-zinc-800/80">
+                                        <button
+                                            onClick={handleLogout}
+                                            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider text-red-400 hover:text-white hover:bg-[#e50914] transition-all cursor-pointer"
+                                        >
+                                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                            </svg>
+                                            Logout
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     ) : (
                         <div className="flex items-center gap-3">
