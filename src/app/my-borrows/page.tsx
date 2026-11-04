@@ -5,6 +5,7 @@ import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 interface BorrowedBook {
     _id: string; // The ID of the borrow record
@@ -93,11 +94,8 @@ export default function MyBorrowsPage() {
 
     if (isPending || loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-[#050505] text-zinc-400 font-mono text-xs uppercase tracking-widest">
-                <div className="flex items-center gap-3">
-                    <span className="h-2 w-2 rounded-full bg-[#e50914] animate-pulse"></span>
-                    <span>Synchronizing Archive Loans...</span>
-                </div>
+            <div className="min-h-screen flex items-center justify-center bg-[#050505]">
+                <LoadingSpinner size="lg" message="Synchronizing Archive Loans..." />
             </div>
         );
     }
