@@ -53,7 +53,8 @@ export default function MyBooksPage() {
     });
     const [actionLoading, setActionLoading] = useState(false);
 
-    // Delete confirmation state
+    // Custom Delete confirmation modal states (not browser confirm)
+    const [bookToDelete, setBookToDelete] = useState<Book | null>(null);
     const [deletingId, setDeletingId] = useState<string | null>(null);
 
     useEffect(() => {
@@ -143,15 +144,16 @@ export default function MyBooksPage() {
         }
     };
 
-    // Delete Book
-    const handleDeleteBook = async (bookId: string) => {
-        const confirmDelete = window.confirm("Are you sure you want to permanently delete this book from the library?");
-        if (!confirmDelete) return;
+    // Permanently Delete Book from Database and UI (Executed from Custom Modal)
+    const handleConfirmDelete = async () => {
+        if (!bookToDelete) return;
 
-        setDeletingId(bookId);
+        const targetId = bookToDelete._id;
+        setDeletingId(targetId);
+
         try {
             const token = localStorage.getItem("access-token");
-            const res = await fetch(`http://localhost:8000/books/${bookId}`, {
+            const res = await fetch(`http://localhost:8000/books/${targetId}`, {
                 method: "DELETE",
                 headers: {
                     "authorization": `Bearer ${token}`
@@ -159,13 +161,16 @@ export default function MyBooksPage() {
             });
 
             if (res.ok) {
-                toast.success("Book removed from library archive");
-                setBooks(prev => prev.filter(b => b._id !== bookId));
+                toast.success("Book successfully removed from library archive and database");
+                // Immediately excise the book from the UI state
+                setBooks(prev => prev.filter(b => b._id !== targetId));
+                setBookToDelete(null);
             } else {
-                toast.error("Failed to delete book");
+                const errorData = await res.json().catch(() => ({}));
+                toast.error(errorData.message || "Failed to delete book from database");
             }
         } catch {
-            toast.error("An error occurred during deletion");
+            toast.error("An error occurred while deleting the book");
         } finally {
             setDeletingId(null);
         }
@@ -302,6 +307,7 @@ export default function MyBooksPage() {
                                                 <div className="inline-flex items-center gap-3">
                                                     {/* Subsection 1: Edit Button (Amber/Gold Contrast) */}
                                                     <button
+                                                        type="button"
                                                         onClick={() => handleOpenEdit(book)}
                                                         className="rounded-xl border border-amber-500/40 bg-amber-500/15 px-4 py-2 text-xs font-mono font-bold uppercase tracking-wider text-amber-300 transition-all hover:bg-amber-500 hover:text-black hover:shadow-[0_0_15px_rgba(245,158,11,0.35)] cursor-pointer"
                                                         title="Edit Copies, Rating & Details"
@@ -309,14 +315,14 @@ export default function MyBooksPage() {
                                                         ✎ Edit
                                                     </button>
 
-                                                    {/* Subsection 2: Delete Button (Crimson Red Contrast) */}
+                                                    {/* Subsection 2: Delete Button (Opens Custom Confirmation Modal) */}
                                                     <button
-                                                        onClick={() => handleDeleteBook(book._id)}
-                                                        disabled={deletingId === book._id}
-                                                        className="rounded-xl border border-red-600/50 bg-[#e50914] px-4 py-2 text-xs font-mono font-bold uppercase tracking-wider text-white transition-all hover:bg-[#c90812] hover:shadow-[0_0_20px_rgba(229,9,20,0.5)] disabled:opacity-50 cursor-pointer"
+                                                        type="button"
+                                                        onClick={() => setBookToDelete(book)}
+                                                        className="rounded-xl border border-red-600/50 bg-[#e50914] px-4 py-2 text-xs font-mono font-bold uppercase tracking-wider text-white transition-all hover:bg-[#c90812] hover:shadow-[0_0_20px_rgba(229,9,20,0.5)] cursor-pointer"
                                                         title="Delete this book from the database"
                                                     >
-                                                        {deletingId === book._id ? "Deleting..." : "✕ Delete"}
+                                                        ✕ Delete
                                                     </button>
                                                 </div>
                                             </td>
@@ -468,6 +474,78 @@ export default function MyBooksPage() {
                                 </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {/* ======================================================== */}
+            {/* CUSTOM DELETE CONFIRMATION MODAL (NOT BROWSER CONFIRM) */}
+            {/* ======================================================== */}
+            {bookToDelete && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
+                    <div className="relative w-full max-w-md rounded-2xl bg-[#0d0d10] border border-red-950/80 p-6 md:p-8 shadow-[0_0_60px_rgba(229,9,20,0.25)]">
+
+                        {/* Warning Icon & Header */}
+                        <div className="flex items-center gap-3.5 mb-5 pb-4 border-b border-zinc-800/80">
+                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-red-950/80 border border-red-800/60 text-[#e50914] shadow-inner">
+                                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </div>
+                            <div>
+                                <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#e50914] block mb-0.5">
+                                    DATABASE DELETION
+                                </span>
+                                <h3 className="text-lg font-black uppercase text-white tracking-tight">Confirm Removal</h3>
+                            </div>
+                        </div>
+
+                        <p className="text-xs text-zinc-300 font-light leading-relaxed mb-4">
+                            Are you sure you want to permanently delete this book from the BookNook library archive and database?
+                        </p>
+
+                        {/* Book Preview Card */}
+                        <div className="flex items-center gap-3.5 p-3.5 rounded-xl bg-[#141418] border border-zinc-800/80 mb-6">
+                            <div className="relative h-14 w-10 shrink-0 rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800">
+                                <Image
+                                    src={bookToDelete.image}
+                                    alt={bookToDelete.title}
+                                    fill
+                                    className="object-cover"
+                                />
+                            </div>
+                            <div className="overflow-hidden">
+                                <h4 className="text-sm font-bold text-white truncate font-sans">{bookToDelete.title}</h4>
+                                <p className="text-xs text-zinc-400 font-mono truncate">By {bookToDelete.author}</p>
+                                <span className="text-[10px] font-mono text-[#e50914] block mt-0.5">
+                                    {bookToDelete.category} • {bookToDelete.copies} {bookToDelete.copies === 1 ? "copy" : "copies"}
+                                </span>
+                            </div>
+                        </div>
+
+                        <p className="text-[11px] font-mono text-zinc-500 mb-6">
+                            ⚠️ This action is permanent and cannot be undone.
+                        </p>
+
+                        {/* Modal Actions */}
+                        <div className="flex items-center justify-end gap-3 pt-4 border-t border-zinc-800">
+                            <button
+                                type="button"
+                                onClick={() => setBookToDelete(null)}
+                                disabled={deletingId === bookToDelete._id}
+                                className="px-5 py-2.5 rounded-xl border border-zinc-800 text-xs font-mono font-bold uppercase tracking-wider text-zinc-400 hover:text-white hover:bg-zinc-900 cursor-pointer disabled:opacity-50"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleConfirmDelete}
+                                disabled={deletingId === bookToDelete._id}
+                                className="px-6 py-2.5 rounded-xl bg-[#e50914] hover:bg-[#c90812] text-xs font-mono font-bold uppercase tracking-wider text-white shadow-[0_0_25px_rgba(229,9,20,0.5)] disabled:opacity-50 cursor-pointer"
+                            >
+                                {deletingId === bookToDelete._id ? "Removing..." : "Permanently Delete"}
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
