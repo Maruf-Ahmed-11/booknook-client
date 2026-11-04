@@ -10,8 +10,22 @@ export default function RegisterPage() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [passwordError, setPasswordError] = useState("");
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+
+    const validatePassword = (pass: string): string => {
+        if (pass.length < 6) {
+            return "Length must be at least 6 characters";
+        }
+        if (!/[A-Z]/.test(pass)) {
+            return "Must have an Uppercase letter in the password";
+        }
+        if (!/[a-z]/.test(pass)) {
+            return "Must have a Lowercase letter in the password";
+        }
+        return "";
+    };
 
     const fetchAndStoreJWT = async (userEmail: string) => {
         try {
@@ -31,6 +45,16 @@ export default function RegisterPage() {
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        // Validate password against required criteria
+        const error = validatePassword(password);
+        if (error) {
+            setPasswordError(error);
+            toast.error(error);
+            return; // Block registration for invalid password
+        }
+
+        setPasswordError("");
         setLoading(true);
 
         await authClient.signUp.email({ email, password, name }, {
@@ -53,6 +77,10 @@ export default function RegisterPage() {
     const handleGithubLogin = async () => {
         await authClient.signIn.social({ provider: "github", callbackURL: "/" });
     };
+
+    const hasMinLength = password.length >= 6;
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
 
     return (
         <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-[#050505] p-4 md:p-8">
@@ -110,16 +138,47 @@ export default function RegisterPage() {
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
-                        <div>
+                        <div className="space-y-2">
                             <input
                                 type="password"
                                 required
-                                minLength={8}
-                                placeholder="Enter your password (min 8 characters)"
-                                className="w-full rounded-xl bg-[#18181b] border border-zinc-800 p-3.5 text-sm text-white placeholder-zinc-500 outline-none transition-all focus:border-[#e50914] focus:ring-1 focus:ring-[#e50914]"
+                                placeholder="Password"
+                                className={`w-full rounded-xl bg-[#18181b] border ${passwordError ? "border-red-500 ring-1 ring-red-500" : "border-zinc-800 focus:border-[#e50914] focus:ring-1 focus:ring-[#e50914]"} p-3.5 text-sm text-white placeholder-zinc-500 outline-none transition-all`}
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                onChange={(e) => {
+                                    const val = e.target.value;
+                                    setPassword(val);
+                                    if (passwordError) {
+                                        setPasswordError(validatePassword(val));
+                                    }
+                                }}
                             />
+
+                            {/* Password Error Alert In Form */}
+                            {passwordError && (
+                                <div className="flex items-center gap-2 rounded-xl border border-red-500/40 bg-red-950/40 px-3.5 py-2.5 text-xs text-red-400 font-medium">
+                                    <svg className="w-4 h-4 shrink-0 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <span>{passwordError}</span>
+                                </div>
+                            )}
+
+                            {/* Password Requirement Badges */}
+                            <div className="grid grid-cols-3 gap-2 pt-1 text-[11px] font-mono">
+                                <div className={`flex items-center gap-1.5 transition-colors ${hasMinLength ? "text-emerald-400 font-semibold" : "text-zinc-500"}`}>
+                                    <span>{hasMinLength ? "✓" : "○"}</span>
+                                    <span>Min 6 chars</span>
+                                </div>
+                                <div className={`flex items-center gap-1.5 transition-colors ${hasUppercase ? "text-emerald-400 font-semibold" : "text-zinc-500"}`}>
+                                    <span>{hasUppercase ? "✓" : "○"}</span>
+                                    <span>1 Uppercase</span>
+                                </div>
+                                <div className={`flex items-center gap-1.5 transition-colors ${hasLowercase ? "text-emerald-400 font-semibold" : "text-zinc-500"}`}>
+                                    <span>{hasLowercase ? "✓" : "○"}</span>
+                                    <span>1 Lowercase</span>
+                                </div>
+                            </div>
                         </div>
 
                         <button
