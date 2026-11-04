@@ -70,6 +70,7 @@ export default function Navbar() {
                     {session && (
                         <>
                             <Link href="/add-book" className="hover:text-white transition-colors">Add Book</Link>
+                            <Link href="/my-books" className="hover:text-white transition-colors">My Books</Link>
                             <Link href="/my-borrows" className="hover:text-white transition-colors">Borrowed Books</Link>
                         </>
                     )}
@@ -100,7 +101,7 @@ export default function Navbar() {
                             </div>
                             <button
                                 onClick={handleLogout}
-                                className="rounded-xl border border-zinc-800 px-4 py-2 text-sm font-semibold text-zinc-300 transition-all hover:bg-zinc-900 hover:text-red-500 hover:border-red-900/40"
+                                className="rounded-xl border border-zinc-800 px-4 py-2 text-sm font-semibold text-zinc-300 transition-all hover:bg-zinc-900 hover:text-red-500 hover:border-red-900/40 cursor-pointer"
                             >
                                 Logout
                             </button>
@@ -108,12 +109,12 @@ export default function Navbar() {
                     ) : (
                         <div className="flex items-center gap-3">
                             <Link href="/login">
-                                <button className="rounded-xl px-4 py-2 text-sm font-semibold text-zinc-300 transition-all hover:text-white">
+                                <button className="rounded-xl px-4 py-2 text-sm font-semibold text-zinc-300 transition-all hover:text-white cursor-pointer">
                                     Login
                                 </button>
                             </Link>
                             <Link href="/register">
-                                <button className="rounded-xl bg-[#e50914] px-5 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#c90812] hover:shadow-[0_0_20px_rgba(229,9,20,0.4)]">
+                                <button className="rounded-xl bg-[#e50914] px-5 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#c90812] hover:shadow-[0_0_20px_rgba(229,9,20,0.4)] cursor-pointer">
                                     Register
                                 </button>
                             </Link>

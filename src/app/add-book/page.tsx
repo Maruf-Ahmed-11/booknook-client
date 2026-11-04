@@ -4,9 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
 
 export default function AddBookPage() {
     const router = useRouter();
+    const { data: session } = authClient.useSession();
     const [loading, setLoading] = useState(false);
 
     const [formData, setFormData] = useState({
@@ -41,12 +43,15 @@ export default function AddBookPage() {
                     "Content-Type": "application/json",
                     "authorization": `Bearer ${token}`,
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({
+                    ...formData,
+                    userEmail: session?.user?.email || "",
+                }),
             });
 
             if (res.ok) {
                 toast.success("Book added to library successfully!");
-                router.push("/books");
+                router.push("/my-books");
                 router.refresh();
             } else {
                 const errorData = await res.json();

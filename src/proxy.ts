@@ -4,7 +4,7 @@ import type { NextRequest } from "next/server";
 export default async function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
-    const protectedRoutes = ["/add-book", "/my-borrows"];
+    const protectedRoutes = ["/add-book", "/my-borrows", "/my-books"];
     const isProtectedRoute = protectedRoutes.some((route) => pathname.startsWith(route));
 
     if (isProtectedRoute) {
@@ -23,5 +23,5 @@ export default async function proxy(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/add-book", "/my-borrows"],
+    matcher: ["/add-book", "/my-borrows", "/my-books"],
 };
