@@ -11,7 +11,7 @@ interface BorrowedBook {
     bookId: string; // The original book's ID
     title: string;
     image: string;
-    category: string;
+    category?: string;
     borrowDate: string;
     returnDate: string;
 }
@@ -20,6 +20,7 @@ export default function MyBorrowsPage() {
     const { data: session, isPending } = authClient.useSession();
     const [borrowedBooks, setBorrowedBooks] = useState<BorrowedBook[]>([]);
     const [loading, setLoading] = useState(true);
+    const [returningId, setReturningId] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchBorrows = async () => {
@@ -27,7 +28,7 @@ export default function MyBorrowsPage() {
 
             try {
                 const token = localStorage.getItem("access-token");
-                const res = await fetch(`http://localhost:8000/borrows?email=${session.user.email}`, {
+                const res = await fetch(`http://localhost:8000/borrows?email=${encodeURIComponent(session.user.email)}`, {
                     headers: {
                         "authorization": `Bearer ${token}`
                     }
@@ -50,6 +51,7 @@ export default function MyBorrowsPage() {
     }, [session, isPending]);
 
     const handleReturn = async (borrowId: string, bookId: string) => {
+        setReturningId(borrowId);
         try {
             const token = localStorage.getItem("access-token");
             const res = await fetch(`http://localhost:8000/borrows/${borrowId}`, {
@@ -58,7 +60,6 @@ export default function MyBorrowsPage() {
                     "Content-Type": "application/json",
                     "authorization": `Bearer ${token}`
                 },
-                // Passing bookId so your backend knows which book's copies to increase
                 body: JSON.stringify({ bookId })
             });
 
@@ -71,6 +72,22 @@ export default function MyBorrowsPage() {
             }
         } catch {
             toast.error("An error occurred while returning the book");
+        } finally {
+            setReturningId(null);
+        }
+    };
+
+    const formatDate = (dateStr: string) => {
+        try {
+            const d = new Date(dateStr);
+            if (isNaN(d.getTime())) return dateStr;
+            return d.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+            });
+        } catch {
+            return dateStr;
         }
     };
 
@@ -89,16 +106,24 @@ export default function MyBorrowsPage() {
         <div className="min-h-screen bg-[#050505] text-white py-12 lg:py-20 selection:bg-[#e50914] selection:text-white">
             <div className="container mx-auto max-w-7xl px-4 md:px-8">
 
-                <div className="mb-12 border-b border-zinc-900 pb-8">
-                    <span className="text-xs font-mono font-bold uppercase tracking-[0.25em] text-[#e50914] mb-2 block">
-                        READER ARCHIVE // ACTIVE CHECKOUTS
-                    </span>
-                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-white font-sans">
-                        My Borrowed Books
-                    </h1>
-                    <p className="mt-2 text-xs md:text-sm text-zinc-400 font-light">
-                        Track your active literature loans, remaining reading days, and return completed volumes.
-                    </p>
+                <div className="mb-12 border-b border-zinc-900 pb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                    <div>
+                        <span className="text-xs font-mono font-bold uppercase tracking-[0.25em] text-[#e50914] mb-2 block">
+                            READER ARCHIVE // ACTIVE CHECKOUTS
+                        </span>
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-white font-sans">
+                            My Borrows
+                        </h1>
+                        <p className="mt-2 text-xs md:text-sm text-zinc-400 font-light">
+                            Manage all active book loans, monitor return schedules, and return volumes to the library archive.
+                        </p>
+                    </div>
+
+                    <Link href="/books">
+                        <button className="rounded-full border border-zinc-800 bg-[#0d0d10] px-6 py-2.5 text-xs font-mono font-bold uppercase tracking-wider text-zinc-300 hover:text-white hover:border-[#e50914] transition-all cursor-pointer">
+                            Browse Collection →
+                        </button>
+                    </Link>
                 </div>
 
                 {borrowedBooks.length === 0 ? (
@@ -119,52 +144,82 @@ export default function MyBorrowsPage() {
                         </Link>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                        {borrowedBooks.map((book) => (
-                            <div
-                                key={book._id}
-                                className="flex gap-5 rounded-2xl border border-zinc-800/80 bg-[#0d0d10] p-5 shadow-sm transition-all hover:border-zinc-700 hover:shadow-lg"
-                            >
-                                <div className="relative w-28 shrink-0 overflow-hidden rounded-xl bg-zinc-900 aspect-[3/4] border border-zinc-800">
-                                    <Image
-                                        src={book.image}
-                                        alt={book.title}
-                                        fill
-                                        sizes="112px"
-                                        className="object-cover"
-                                    />
-                                </div>
+                    /* Table showing borrowed books */
+                    <div className="overflow-hidden rounded-2xl border border-zinc-800 bg-[#0d0d10] shadow-[0_0_50px_rgba(0,0,0,0.8)]">
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-left border-collapse">
+                                <thead>
+                                    <tr className="border-b border-zinc-800 bg-[#121216] text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-400">
+                                        <th scope="col" className="px-6 py-4">Image</th>
+                                        <th scope="col" className="px-6 py-4">Title</th>
+                                        <th scope="col" className="px-6 py-4">Borrow Date</th>
+                                        <th scope="col" className="px-6 py-4">Return Date</th>
+                                        <th scope="col" className="px-6 py-4 text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-zinc-800/60 text-sm">
+                                    {borrowedBooks.map((book) => (
+                                        <tr key={book._id} className="hover:bg-zinc-900/40 transition-colors group">
+                                            {/* Image */}
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <div className="relative h-20 w-14 shrink-0 overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 shadow-md">
+                                                    <Image
+                                                        src={book.image}
+                                                        alt={book.title || "Book cover"}
+                                                        fill
+                                                        sizes="56px"
+                                                        className="object-cover transition-transform group-hover:scale-105"
+                                                    />
+                                                </div>
+                                            </td>
 
-                                <div className="flex flex-grow flex-col justify-between py-0.5">
-                                    <div>
-                                        <span className="mb-2 inline-block rounded bg-red-950/80 border border-red-800/60 px-2 py-0.5 text-[9px] font-mono font-bold uppercase tracking-wider text-red-300">
-                                            {book.category}
-                                        </span>
-                                        <h3 className="line-clamp-2 text-base font-bold text-white leading-tight font-sans">
-                                            {book.title}
-                                        </h3>
+                                            {/* Title */}
+                                            <td className="px-6 py-4">
+                                                <div className="max-w-md">
+                                                    {book.category && (
+                                                        <span className="mb-1.5 inline-block rounded bg-red-950/80 border border-red-800/60 px-2 py-0.5 text-[9px] font-mono font-bold uppercase tracking-wider text-red-300">
+                                                            {book.category}
+                                                        </span>
+                                                    )}
+                                                    <h3 className="font-bold text-white text-base leading-snug font-sans group-hover:text-red-400 transition-colors">
+                                                        {book.title}
+                                                    </h3>
+                                                    <Link
+                                                        href={`/books/${book.bookId}`}
+                                                        className="inline-flex items-center gap-1 text-[11px] font-mono text-zinc-500 hover:text-[#e50914] mt-1 transition-colors"
+                                                    >
+                                                        Book Details →
+                                                    </Link>
+                                                </div>
+                                            </td>
 
-                                        <div className="mt-4 text-xs font-mono space-y-1.5 text-zinc-400">
-                                            <p className="flex justify-between">
-                                                <span className="text-zinc-500 uppercase text-[10px]">Borrowed:</span>
-                                                <span className="text-zinc-300">{new Date(book.borrowDate).toLocaleDateString()}</span>
-                                            </p>
-                                            <p className="flex justify-between">
-                                                <span className="text-zinc-500 uppercase text-[10px]">Return By:</span>
-                                                <span className="text-[#e50914] font-bold">{new Date(book.returnDate).toLocaleDateString()}</span>
-                                            </p>
-                                        </div>
-                                    </div>
+                                            {/* Borrow Date */}
+                                            <td className="px-6 py-4 whitespace-nowrap text-xs font-mono text-zinc-300">
+                                                {formatDate(book.borrowDate)}
+                                            </td>
 
-                                    <button
-                                        onClick={() => handleReturn(book._id, book.bookId)}
-                                        className="mt-5 w-full rounded-xl bg-zinc-900 border border-zinc-800 py-2.5 text-xs font-mono font-bold uppercase tracking-wider text-zinc-300 transition-all hover:bg-[#e50914] hover:border-[#e50914] hover:text-white hover:shadow-[0_0_15px_rgba(229,9,20,0.4)] cursor-pointer"
-                                    >
-                                        Return Book
-                                    </button>
-                                </div>
-                            </div>
-                        ))}
+                                            {/* Return Date */}
+                                            <td className="px-6 py-4 whitespace-nowrap text-xs font-mono">
+                                                <span className="inline-block rounded-md bg-zinc-900 border border-zinc-800 px-2.5 py-1 text-zinc-200">
+                                                    {formatDate(book.returnDate)}
+                                                </span>
+                                            </td>
+
+                                            {/* Action: Return Book */}
+                                            <td className="px-6 py-4 whitespace-nowrap text-right">
+                                                <button
+                                                    onClick={() => handleReturn(book._id, book.bookId)}
+                                                    disabled={returningId === book._id}
+                                                    className="rounded-xl bg-[#e50914] px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-sm transition-all hover:bg-[#c90812] hover:shadow-[0_0_20px_rgba(229,9,20,0.45)] disabled:opacity-50 cursor-pointer"
+                                                >
+                                                    {returningId === book._id ? "Returning..." : "Return Book"}
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 )}
             </div>
