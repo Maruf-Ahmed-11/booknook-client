@@ -3,15 +3,33 @@
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Image from "next/image";
 
 export default function Navbar() {
     const { data: session, isPending } = authClient.useSession();
     const router = useRouter();
+    const pathname = usePathname();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+
+    const isActive = (path: string) => {
+        if (path === "/") return pathname === "/";
+        return pathname === path || pathname.startsWith(`${path}/`);
+    };
+
+    const navLinks = [
+        { name: "Home", href: "/" },
+        { name: "All Books", href: "/books" },
+        ...(session
+            ? [
+                { name: "Add Book", href: "/add-book" },
+                { name: "My Books", href: "/my-books" },
+                { name: "My Borrows", href: "/my-borrows" },
+            ]
+            : []),
+    ];
 
     // Automatically sync Express JWT to localStorage for Google/GitHub/Email logins
     useEffect(() => {
@@ -80,16 +98,26 @@ export default function Navbar() {
                 </Link>
 
                 {/* Navigation Links */}
-                <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
-                    <Link href="/" className="hover:text-white transition-colors">Home</Link>
-                    <Link href="/books" className="hover:text-white transition-colors">All Books</Link>
-                    {session && (
-                        <>
-                            <Link href="/add-book" className="hover:text-white transition-colors">Add Book</Link>
-                            <Link href="/my-books" className="hover:text-white transition-colors">My Books</Link>
-                            <Link href="/my-borrows" className="hover:text-white transition-colors">My Borrows</Link>
-                        </>
-                    )}
+                <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
+                    {navLinks.map((link) => {
+                        const active = isActive(link.href);
+                        return (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                className={`relative py-1 transition-colors ${
+                                    active
+                                        ? "text-[#e50914] font-semibold"
+                                        : "text-zinc-400 hover:text-white"
+                                }`}
+                            >
+                                {link.name}
+                                {active && (
+                                    <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#e50914] rounded-full shadow-[0_0_10px_rgba(229,9,20,0.8)]" />
+                                )}
+                            </Link>
+                        );
+                    })}
                 </nav>
 
                 {/* Auth Actions */}
