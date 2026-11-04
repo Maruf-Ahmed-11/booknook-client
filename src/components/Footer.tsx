@@ -11,9 +11,9 @@ export default function Footer() {
         {/* 3-Column Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-14 pb-12 border-b border-zinc-900">
 
-          {/* ======================================================== */}
+          {/* =============================== */}
           {/* LEFT COLUMN: Logo & Description */}
-          {/* ======================================================== */}
+          {/* =============================== */}
           <div className="flex flex-col items-start">
             {/* Logo and Name identical to Navbar */}
             <Link href="/" className="flex items-center gap-2.5 group">
@@ -36,9 +36,9 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* ======================================================== */}
+          {/* ================================== */}
           {/* MIDDLE COLUMN: Contact Information */}
-          {/* ======================================================== */}
+          {/* ================================== */}
           <div className="flex flex-col">
             <span className="text-xs font-mono font-bold uppercase tracking-[0.25em] text-[#e50914] mb-4 block">
               CONTACT INFORMATION
@@ -202,3 +202,6 @@ export default function Footer() {
     </footer>
   );
 }
+
+
+//✓✓✓

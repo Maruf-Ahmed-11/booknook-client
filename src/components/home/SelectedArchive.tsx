@@ -111,7 +111,7 @@ export default function SelectedArchive({ books }: SelectedArchiveProps) {
                 {/* Rating Badge */}
                 <div className="absolute top-3 right-3 flex items-center gap-1 bg-black/85 backdrop-blur-md px-2.5 py-1 rounded-md border border-zinc-800 text-[10px] font-bold text-amber-400">
                   <span>★</span>
-                  <span>{book.rating ? Number(book.rating).toFixed(1) : "5.0"}</span>
+                  <span>{book.rating ? Number(book.rating).toFixed(1) : "10.0"}</span>
                 </div>
 
                 {/* Quick View Button on Hover */}
@@ -146,11 +146,11 @@ export default function SelectedArchive({ books }: SelectedArchiveProps) {
                 {/* Star Rating Display */}
                 <div className="flex items-center gap-1.5 mt-2.5">
                   <div className="flex text-amber-400 text-xs">
-                    {"★".repeat(Math.round(book.rating || 5))}
-                    {"☆".repeat(5 - Math.round(book.rating || 5))}
+                    {"★".repeat(Math.min(5, Math.max(0, Math.round((Number(book.rating) || 10) > 5 ? (Number(book.rating) || 10) / 2 : (Number(book.rating) || 5)))))}
+                    {"☆".repeat(Math.max(0, 5 - Math.min(5, Math.max(0, Math.round((Number(book.rating) || 10) > 5 ? (Number(book.rating) || 10) / 2 : (Number(book.rating) || 5))))))}
                   </div>
                   <span className="text-[10px] font-mono text-zinc-500">
-                    ({Number(book.rating || 5).toFixed(1)} / 5.0)
+                    ({Number(book.rating || 10).toFixed(1)} / 10)
                   </span>
                 </div>
 
@@ -193,9 +193,9 @@ export default function SelectedArchive({ books }: SelectedArchiveProps) {
 
       </div>
 
-      {/* ======================================================== */}
+      {/* =========================*/}
       {/* QUICK VIEW DETAILS MODAL */}
-      {/* ======================================================== */}
+      {/* ======================== */}
       {activeModalBook && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
           <div className="relative w-full max-w-2xl rounded-2xl bg-[#0d0d10] border border-zinc-800 p-6 sm:p-8 shadow-[0_0_60px_rgba(0,0,0,0.95)] max-h-[90vh] overflow-y-auto">
@@ -233,7 +233,7 @@ export default function SelectedArchive({ books }: SelectedArchiveProps) {
                 {/* Rating & Stock Badges */}
                 <div className="flex flex-wrap items-center gap-3 mt-3">
                   <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-mono text-amber-400">
-                    <span>★ {Number(activeModalBook.rating || 5).toFixed(1)} / 5.0</span>
+                    <span>★ {Number(activeModalBook.rating || 10).toFixed(1)} / 10</span>
                   </div>
                   <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-300">
                     <span className={`h-2 w-2 rounded-full ${activeModalBook.copies > 0 ? "bg-[#e50914]" : "bg-zinc-600"}`}></span>
@@ -291,3 +291,6 @@ export default function SelectedArchive({ books }: SelectedArchiveProps) {
     </section>
   );
 }
+
+
+//✓✓✓

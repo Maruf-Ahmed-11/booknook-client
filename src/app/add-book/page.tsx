@@ -31,7 +31,7 @@ export default function AddBookPage() {
         title: "",
         author: "",
         category: "Novel",
-        rating: 5,
+        rating: 10,
         copies: 1,
         image: "",
         description: "",
@@ -93,7 +93,7 @@ export default function AddBookPage() {
         <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-[#050505] p-4 md:p-8">
             <div className="flex w-full max-w-[1000px] overflow-hidden rounded-2xl bg-[#0d0d10] border border-zinc-800/80 shadow-[0_0_60px_rgba(0,0,0,0.9)]">
 
-                {/* Left Side: Inspiration Library Image */}
+                {/* Left Side: Library Image */}
                 <div className="hidden w-2/5 relative lg:block">
                     <div
                         className="absolute inset-0 bg-cover bg-center"
@@ -129,7 +129,7 @@ export default function AddBookPage() {
 
                     <form onSubmit={handleSubmit} className="space-y-5">
 
-                        {/* Uneditable Curator Login Info (Auto-populated & Locked) */}
+                        {/* Uneditable Curator Login Info (Auto-genarated & Locked) */}
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 rounded-xl bg-[#141418] p-4 border border-zinc-800/80">
                             <div>
                                 <div className="flex items-center justify-between mb-1.5">
@@ -217,11 +217,11 @@ export default function AddBookPage() {
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="mb-1.5 block text-xs font-mono font-semibold uppercase tracking-wider text-zinc-400">Rating (1-5)</label>
+                                    <label className="mb-1.5 block text-xs font-mono font-semibold uppercase tracking-wider text-zinc-400">Rating (1-10)</label>
                                     <input
                                         type="number"
                                         name="rating"
-                                        min="1" max="5"
+                                        min="1" max="10"
                                         required
                                         className="w-full rounded-xl bg-[#18181b] border border-zinc-800 p-3 text-sm text-white outline-none transition-all focus:border-[#e50914] focus:ring-1 focus:ring-[#e50914]"
                                         value={formData.rating}
@@ -308,3 +308,5 @@ export default function AddBookPage() {
         </div>
     );
 }
+
+//✓✓✓

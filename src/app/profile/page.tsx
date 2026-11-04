@@ -64,7 +64,7 @@ export default function ProfilePage() {
             {/* Ambient Background Glow */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(229,9,20,0.08),transparent_70%)] pointer-events-none blur-3xl"></div>
 
-            {/* Profile Card (matching uploaded example layout) */}
+            {/* Profile Card*/}
             <div className="relative z-10 w-full max-w-[440px] rounded-3xl bg-[#0d0d10] border border-zinc-800/90 p-8 md:p-10 text-center shadow-[0_0_60px_rgba(0,0,0,0.85)]">
 
                 {/* Top Eyebrow Tag */}
@@ -92,7 +92,7 @@ export default function ProfilePage() {
                     )}
                 </div>
 
-                {/* Name & Email (Exact matches for example image) */}
+                {/* Name & Email*/}
                 <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white tracking-tight">
                     {session.user.name}
                 </h1>
@@ -136,3 +136,4 @@ export default function ProfilePage() {
     );
 }
 
+//✓✓✓

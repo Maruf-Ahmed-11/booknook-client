@@ -16,7 +16,7 @@ interface Book {
 }
 
 export default async function BookDetailsPage({ params }: { params: Promise<{ id: string }> }) {
-    // Await the dynamic params correctly for Next.js 15/16+
+    // Await the dynamic params correctly for latest version of Next.js
     const resolvedParams = await params;
     const id = resolvedParams.id;
 
@@ -163,3 +163,5 @@ export default async function BookDetailsPage({ params }: { params: Promise<{ id
         </div>
     );
 }
+
+//✓✓✓

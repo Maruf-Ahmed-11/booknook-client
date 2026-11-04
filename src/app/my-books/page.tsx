@@ -54,7 +54,7 @@ export default function MyBooksPage() {
     });
     const [actionLoading, setActionLoading] = useState(false);
 
-    // Custom Delete confirmation modal states (not browser confirm)
+    // Custom Delete confirmation modal states (not browser provided)
     const [bookToDelete, setBookToDelete] = useState<Book | null>(null);
     const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -237,19 +237,19 @@ export default function MyBooksPage() {
                                     <tr className="border-b border-zinc-800/90 bg-[#121217] text-[11px] font-mono uppercase tracking-[0.2em] text-zinc-400">
                                         {/* Section 1: Books */}
                                         <th scope="col" className="py-4 px-6">
-                                            1. Books (Cover &amp; Title)
+                                             Books (Cover &amp; Title)
                                         </th>
                                         {/* Section 2: Category */}
                                         <th scope="col" className="py-4 px-6">
-                                            2. Category
+                                             Category
                                         </th>
                                         {/* Section 3: Copies */}
                                         <th scope="col" className="py-4 px-6 text-center">
-                                            3. Copies Added
+                                             Copies Added
                                         </th>
                                         {/* Section 4: Action (2 Subsections: Edit & Delete) */}
                                         <th scope="col" className="py-4 px-6 text-right">
-                                            4. Actions (Edit &amp; Delete)
+                                             Actions (Edit &amp; Delete)
                                         </th>
                                     </tr>
                                 </thead>
@@ -277,7 +277,7 @@ export default function MyBooksPage() {
                                                         </Link>
                                                         <p className="text-xs text-zinc-400 font-mono mt-0.5">By {book.author}</p>
                                                         <span className="text-[10px] text-amber-400 font-mono font-bold mt-1 inline-block">
-                                                            ★ {book.rating} / 5.0
+                                                            ★ {book.rating} / 10
                                                         </span>
                                                     </div>
                                                 </div>
@@ -335,9 +335,9 @@ export default function MyBooksPage() {
 
             </div>
 
-            {/* ======================================================== */}
+            {/* ========================== */}
             {/* EDIT BOOK MODAL DIALOG */}
-            {/* ======================================================== */}
+            {/* ========================== */}
             {isEditOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
                     <div className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl bg-[#0d0d10] border border-zinc-800 p-6 md:p-8 shadow-[0_0_60px_rgba(0,0,0,0.9)] animate-in fade-in zoom-in-95 duration-200">
@@ -409,11 +409,11 @@ export default function MyBooksPage() {
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-[11px] font-mono uppercase text-zinc-400 mb-1.5">Rating (1 - 5)</label>
+                                    <label className="block text-[11px] font-mono uppercase text-zinc-400 mb-1.5">Rating (1 - 10)</label>
                                     <input
                                         type="number"
                                         min="1"
-                                        max="5"
+                                        max="10"
                                         step="0.1"
                                         required
                                         className="w-full rounded-xl bg-[#18181b] border border-zinc-800 p-3 text-sm text-white outline-none focus:border-[#e50914] focus:ring-1 focus:ring-[#e50914]"
@@ -476,9 +476,9 @@ export default function MyBooksPage() {
                 </div>
             )}
 
-            {/* ======================================================== */}
+            {/* ====================================================== */}
             {/* CUSTOM DELETE CONFIRMATION MODAL (NOT BROWSER CONFIRM) */}
-            {/* ======================================================== */}
+            {/* ====================================================== */}
             {bookToDelete && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
                     <div className="relative w-full max-w-md rounded-2xl bg-[#0d0d10] border border-red-950/80 p-6 md:p-8 shadow-[0_0_60px_rgba(229,9,20,0.25)]">
@@ -551,3 +551,5 @@ export default function MyBooksPage() {
         </div>
     );
 }
+
+//✓✓✓

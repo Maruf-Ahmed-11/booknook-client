@@ -34,7 +34,7 @@ export default function CurationPhilosophy() {
       key: m.key,
       purity: m.benchmarkPurity,
       bookCount: 0,
-      avgRating: ((m.benchmarkPurity / 100) * 5).toFixed(1),
+      avgRating: ((m.benchmarkPurity / 100) * 10).toFixed(1),
       isDynamic: false,
     }))
   );
@@ -69,9 +69,13 @@ export default function CurationPhilosophy() {
           });
 
           if (matchingBooks.length > 0) {
-            const totalRating = matchingBooks.reduce((sum, b) => sum + (Number(b.rating) || 5), 0);
+            const totalRating = matchingBooks.reduce((sum, b) => {
+              let r = Number(b.rating) || 10;
+              if (r <= 5) r = r * 2; // Seamlessly support existing 1-5 ratings on the 1-10 scale
+              return sum + r;
+            }, 0);
             const avg = totalRating / matchingBooks.length;
-            const purity = Math.min(100, Math.round((avg / 5) * 100));
+            const purity = Math.min(100, Math.round((avg / 10) * 100));
             return {
               name: metric.name,
               key: metric.key,
@@ -87,7 +91,7 @@ export default function CurationPhilosophy() {
             key: metric.key,
             purity: metric.benchmarkPurity,
             bookCount: 0,
-            avgRating: ((metric.benchmarkPurity / 100) * 5).toFixed(1),
+            avgRating: ((metric.benchmarkPurity / 100) * 10).toFixed(1),
             isDynamic: false,
           };
         });
@@ -170,7 +174,7 @@ export default function CurationPhilosophy() {
                     )}
                   </span>
                   <div className="flex items-center gap-2">
-                    <span className="text-zinc-500 text-[10px]">★ {item.avgRating}</span>
+                    <span className="text-zinc-500 text-[10px]">★ {item.avgRating} / 10</span>
                     <span className="text-[#e50914] font-bold">{item.purity}%</span>
                   </div>
                 </div>
@@ -185,7 +189,7 @@ export default function CurationPhilosophy() {
             ))}
 
             <p className="pt-3 text-[10px] font-mono text-zinc-500 uppercase tracking-widest text-center border-t border-zinc-800/60">
-              Computed from Community Ratings: (Rating ÷ 5.0) × 100%
+              Computed from Community Ratings: (Rating ÷ 10.0) × 100%
             </p>
           </div>
         </div>
@@ -194,3 +198,5 @@ export default function CurationPhilosophy() {
     </section>
   );
 }
+
+//✓✓✓

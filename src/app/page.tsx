@@ -24,7 +24,7 @@ const fallbackBooks: Book[] = [
     title: "The Great Gatsby",
     author: "F. Scott Fitzgerald",
     category: "Novel",
-    rating: 4.8,
+    rating: 9.6,
     copies: 5,
     image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop",
     description: "A timeless tale of ambition, obsession, and the haunting illusion of the American Dream in the Roaring Twenties."
@@ -34,7 +34,7 @@ const fallbackBooks: Book[] = [
     title: "Dune: Master Chronicles",
     author: "Frank Herbert",
     category: "Sci-Fi",
-    rating: 4.9,
+    rating: 9.8,
     copies: 3,
     image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800&auto=format&fit=crop",
     description: "An epic masterpiece of politics, religion, ecology, and myth on the harsh desert planet of Arrakis."
@@ -44,7 +44,7 @@ const fallbackBooks: Book[] = [
     title: "Meditations",
     author: "Marcus Aurelius",
     category: "Philosophy",
-    rating: 5.0,
+    rating: 10.0,
     copies: 4,
     image: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=800&auto=format&fit=crop",
     description: "Private stoic reflections of the Roman Emperor on personal virtue, discipline, and emotional sovereignty."
@@ -54,7 +54,7 @@ const fallbackBooks: Book[] = [
     title: "The Silent Patient",
     author: "Alex Michaelides",
     category: "Thriller",
-    rating: 4.7,
+    rating: 9.4,
     copies: 2,
     image: "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=800&auto=format&fit=crop",
     description: "A shocking psychological thriller of a woman’s act of violence against her husband and the therapist obsessed with uncovering her motive."
@@ -64,7 +64,7 @@ const fallbackBooks: Book[] = [
     title: "Atomic Habits",
     author: "James Clear",
     category: "Psychology",
-    rating: 4.9,
+    rating: 9.8,
     copies: 6,
     image: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=800&auto=format&fit=crop",
     description: "An evidence-based framework for forming good habits, breaking bad ones, and mastering tiny behaviors that lead to remarkable results."
@@ -74,7 +74,7 @@ const fallbackBooks: Book[] = [
     title: "The Hound of the Baskervilles",
     author: "Arthur Conan Doyle",
     category: "Mystery",
-    rating: 4.8,
+    rating: 9.6,
     copies: 3,
     image: "https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?q=80&w=800&auto=format&fit=crop",
     description: "Sherlock Holmes and Dr. Watson investigate the legendary curse of a demonic hound haunting the eerie Devonshire moors."
@@ -84,7 +84,7 @@ const fallbackBooks: Book[] = [
     title: "A Game of Thrones",
     author: "George R.R. Martin",
     category: "Fantasy",
-    rating: 4.9,
+    rating: 9.8,
     copies: 4,
     image: "https://images.unsplash.com/photo-1476275466078-4007374efbbe?q=80&w=800&auto=format&fit=crop",
     description: "Noble houses battle for dominion over the Iron Throne in a brutal fantasy world where winter is perpetual and treacherous."
@@ -94,7 +94,7 @@ const fallbackBooks: Book[] = [
     title: "Sapiens: A Brief History of Humankind",
     author: "Yuval Noah Harari",
     category: "History",
-    rating: 4.8,
+    rating: 9.6,
     copies: 5,
     image: "https://images.unsplash.com/photo-1461360370896-922624d12aa1?q=80&w=800&auto=format&fit=crop",
     description: "A groundbreaking journey examining how an unremarkable ape conquered the globe through shared myths, commerce, and science."
@@ -144,3 +144,5 @@ export default async function HomePage() {
     </div>
   );
 }
+
+//✓✓✓
