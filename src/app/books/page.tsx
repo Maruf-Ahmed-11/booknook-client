@@ -13,31 +13,57 @@ interface Book {
 }
 
 export default async function AllBooksPage() {
-    const res = await fetch("http://localhost:8000/books", { cache: "no-store" });
+    let books: Book[] = [];
+    let isError = false;
 
-    if (!res.ok) {
+    try {
+        const res = await fetch("http://localhost:8000/books", { cache: "no-store" });
+        if (!res.ok) {
+            isError = true;
+        } else {
+            books = await res.json();
+        }
+    } catch {
+        isError = true;
+    }
+
+    if (isError) {
         return (
-            <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 text-center">
-                <h2 className="text-3xl font-bold text-gray-900">Oops! Database Disconnected</h2>
-                <p className="mt-2 text-gray-500">Make sure your Express server is running on port 8000.</p>
+            <div className="flex min-h-[70vh] flex-col items-center justify-center px-4 text-center bg-[#050505] text-white">
+                <span className="text-xs font-mono font-bold uppercase tracking-[0.25em] text-[#e50914] mb-3">
+                    DATABASE CONNECTION
+                </span>
+                <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white">Archive Offline</h2>
+                <p className="mt-2 text-zinc-400 text-sm max-w-md font-light">
+                    Unable to reach the Express backend server on port 8000. Please verify your local database service.
+                </p>
+                <Link
+                    href="/"
+                    className="mt-6 px-6 py-2.5 rounded-full border border-zinc-800 text-xs font-mono font-bold uppercase tracking-wider text-zinc-300 hover:text-white hover:border-zinc-700 transition-all"
+                >
+                    ← Return Home
+                </Link>
             </div>
         );
     }
 
-    const books: Book[] = await res.json();
-
     return (
-        <div className="min-h-screen bg-[#f8f9fa] py-12 lg:py-20">
+        <div className="min-h-screen bg-[#050505] text-white py-12 lg:py-20 selection:bg-[#e50914] selection:text-white">
             <div className="container mx-auto max-w-7xl px-4 md:px-8">
 
                 {/* Header Section */}
-                <div className="mb-12 flex flex-col items-start justify-between gap-4 border-b border-gray-200 pb-6 md:flex-row md:items-end">
+                <div className="mb-12 flex flex-col items-start justify-between gap-6 border-b border-zinc-900 pb-8 md:flex-row md:items-end">
                     <div>
-                        <h1 className="font-serif text-4xl font-bold text-gray-900 md:text-5xl">Library Collection</h1>
-                        <p className="mt-3 text-lg text-gray-500">Explore our curated collection of {books.length} {books.length === 1 ? 'book' : 'books'}.</p>
+                        <span className="text-xs font-mono font-bold uppercase tracking-[0.25em] text-[#e50914] mb-2 block">
+                            COLLECTION INDEX
+                        </span>
+                        <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-white">Library Collection</h1>
+                        <p className="mt-2 text-sm text-zinc-400 font-light">
+                            Explore our curated archive of {books.length} {books.length === 1 ? 'registered volume' : 'registered volumes'}.
+                        </p>
                     </div>
                     <Link href="/add-book">
-                        <button className="rounded-xl bg-[#8b5cf6] px-6 py-3 text-sm font-semibold text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-[#7c3aed] hover:shadow-lg">
+                        <button className="rounded-full bg-[#e50914] px-7 py-3.5 text-xs font-bold uppercase tracking-[0.15em] text-white shadow-[0_0_25px_rgba(229,9,20,0.45)] transition-all hover:bg-[#c90812] hover:shadow-[0_0_35px_rgba(229,9,20,0.65)] hover:scale-105 cursor-pointer">
                             + Add New Book
                         </button>
                     </Link>
@@ -45,64 +71,70 @@ export default async function AllBooksPage() {
 
                 {/* Dynamic Grid / Empty State */}
                 {books.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-gray-300 bg-white py-32 text-center">
-                        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-purple-50 text-[#8b5cf6]">
+                    <div className="flex flex-col items-center justify-center rounded-3xl border border-zinc-800 bg-[#0d0d10] py-32 text-center">
+                        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-950/60 border border-red-900/60 text-[#e50914]">
                             <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                             </svg>
                         </div>
-                        <h3 className="text-2xl font-bold text-gray-900">No books found</h3>
-                        <p className="mt-2 text-gray-500">Your library is empty. Be the first to contribute!</p>
+                        <h3 className="text-2xl font-black uppercase tracking-tight text-white">No Books Archived Yet</h3>
+                        <p className="mt-2 text-xs text-zinc-400 max-w-sm">The digital library is currently awaiting its first contribution.</p>
+                        <Link href="/add-book" className="mt-6">
+                            <button className="rounded-full bg-[#e50914] px-6 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-md hover:bg-[#c90812]">
+                                Contribute First Book
+                            </button>
+                        </Link>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-10">
+                    <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-8">
                         {books.map((book) => (
                             <div
                                 key={book._id}
-                                className="group flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+                                className="group flex flex-col overflow-hidden rounded-2xl border border-zinc-800/80 bg-[#0d0d10] shadow-sm transition-all duration-300 hover:-translate-y-2 hover:border-[#e50914]/60 hover:shadow-[0_15px_30px_rgba(229,9,20,0.15)]"
                             >
                                 {/* Image Container */}
-                                <div className="relative w-full overflow-hidden bg-gray-100 aspect-[3/4]">
+                                <div className="relative w-full overflow-hidden bg-zinc-900 aspect-[3/4]">
                                     <Image
                                         src={book.image}
                                         alt={book.title || "Book cover"}
                                         fill
                                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                        className="object-cover transition-transform duration-700 group-hover:scale-105"
                                     />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d10] via-transparent to-transparent opacity-80"></div>
+
                                     {/* Glassmorphism Rating Badge */}
-                                    <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-white/80 px-3 py-1.5 text-xs font-bold text-gray-800 shadow-sm backdrop-blur-md">
-                                        <svg className="h-3.5 w-3.5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                        </svg>
-                                        {book.rating}
+                                    <div className="absolute right-3 top-3 flex items-center gap-1 rounded-md bg-black/80 px-2.5 py-1 text-xs font-bold text-amber-400 border border-zinc-800 backdrop-blur-md">
+                                        ★ {book.rating}
+                                    </div>
+
+                                    {/* Category Badge */}
+                                    <div className="absolute bottom-3 left-3">
+                                        <span className="w-fit rounded bg-red-950/80 border border-red-800/60 px-2.5 py-1 text-[9px] font-mono font-bold uppercase tracking-wider text-red-300">
+                                            {book.category}
+                                        </span>
                                     </div>
                                 </div>
 
                                 {/* Card Content */}
                                 <div className="flex flex-grow flex-col p-6">
-                                    {/* Category Badge */}
-                                    <span className="mb-3 w-fit rounded-md bg-purple-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#8b5cf6]">
-                                        {book.category}
-                                    </span>
-
-                                    <h3 className="line-clamp-1 text-xl font-bold text-gray-900" title={book.title}>
+                                    <h3 className="line-clamp-1 text-lg font-bold text-white group-hover:text-red-400 transition-colors" title={book.title}>
                                         {book.title}
                                     </h3>
-                                    <p className="mb-4 mt-1 text-sm text-gray-500 line-clamp-1">{book.author}</p>
+                                    <p className="mb-4 mt-1 text-xs font-mono text-zinc-400 line-clamp-1">{book.author}</p>
 
                                     {/* Footer (Stock & Button) */}
-                                    <div className="mt-auto flex items-center justify-between border-t border-gray-100 pt-5">
+                                    <div className="mt-auto flex items-center justify-between border-t border-zinc-800/80 pt-4">
                                         <div className="flex items-center gap-1.5">
-                                            <div className={`h-2 w-2 rounded-full ${book.copies > 0 ? 'bg-emerald-500' : 'bg-red-500'}`}></div>
-                                            <span className={`text-sm font-medium ${book.copies > 0 ? 'text-gray-700' : 'text-red-500'}`}>
-                                                {book.copies > 0 ? `${book.copies} Available` : 'Out of Stock'}
+                                            <div className={`h-1.5 w-1.5 rounded-full ${book.copies > 0 ? 'bg-[#e50914]' : 'bg-zinc-600'}`}></div>
+                                            <span className={`text-xs font-mono ${book.copies > 0 ? 'text-zinc-300' : 'text-zinc-500'}`}>
+                                                {book.copies > 0 ? `${book.copies} In Stock` : 'Out of Stock'}
                                             </span>
                                         </div>
 
                                         <Link href={`/books/${book._id}`}>
-                                            <button className="rounded-xl bg-gray-900 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#8b5cf6]">
-                                                Details
+                                            <button className="rounded-lg bg-zinc-900 border border-zinc-800 px-3.5 py-1.5 text-xs font-mono font-bold uppercase tracking-wider text-zinc-300 transition-all hover:bg-[#e50914] hover:border-[#e50914] hover:text-white cursor-pointer">
+                                                Details →
                                             </button>
                                         </Link>
                                     </div>

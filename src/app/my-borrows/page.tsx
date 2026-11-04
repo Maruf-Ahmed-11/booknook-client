@@ -37,8 +37,8 @@ export default function MyBorrowsPage() {
                     const data = await res.json();
                     setBorrowedBooks(data);
                 }
-            } catch (error) {
-                console.error("Failed to fetch borrowed books:", error);
+            } catch (err) {
+                console.error("Failed to fetch borrowed books:", err);
             } finally {
                 setLoading(false);
             }
@@ -69,30 +69,51 @@ export default function MyBorrowsPage() {
             } else {
                 toast.error("Failed to return book");
             }
-        } catch (error) {
-            toast.error("An error occurred");
+        } catch {
+            toast.error("An error occurred while returning the book");
         }
     };
 
     if (isPending || loading) {
-        return <div className="min-h-screen flex items-center justify-center bg-[#f8f9fa]"><p className="text-gray-500 font-medium">Loading your library...</p></div>;
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-[#050505] text-zinc-400 font-mono text-xs uppercase tracking-widest">
+                <div className="flex items-center gap-3">
+                    <span className="h-2 w-2 rounded-full bg-[#e50914] animate-pulse"></span>
+                    <span>Synchronizing Archive Loans...</span>
+                </div>
+            </div>
+        );
     }
 
     return (
-        <div className="min-h-screen bg-[#f8f9fa] py-12 lg:py-20">
+        <div className="min-h-screen bg-[#050505] text-white py-12 lg:py-20 selection:bg-[#e50914] selection:text-white">
             <div className="container mx-auto max-w-7xl px-4 md:px-8">
 
-                <div className="mb-12 border-b border-gray-200 pb-6">
-                    <h1 className="font-serif text-3xl font-bold text-gray-900 md:text-4xl">My Borrowed Books</h1>
-                    <p className="mt-2 text-gray-500">Manage the books you are currently reading.</p>
+                <div className="mb-12 border-b border-zinc-900 pb-8">
+                    <span className="text-xs font-mono font-bold uppercase tracking-[0.25em] text-[#e50914] mb-2 block">
+                        READER ARCHIVE // ACTIVE CHECKOUTS
+                    </span>
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-white font-sans">
+                        My Borrowed Books
+                    </h1>
+                    <p className="mt-2 text-xs md:text-sm text-zinc-400 font-light">
+                        Track your active literature loans, remaining reading days, and return completed volumes.
+                    </p>
                 </div>
 
                 {borrowedBooks.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-gray-300 bg-white py-32 text-center shadow-sm">
-                        <h3 className="text-2xl font-bold text-gray-900">No books borrowed yet</h3>
-                        <p className="mt-2 text-gray-500">Head over to the library to find your next great read.</p>
+                    <div className="flex flex-col items-center justify-center rounded-3xl border border-zinc-800 bg-[#0d0d10] py-32 text-center shadow-sm">
+                        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-950/60 border border-red-900/60 text-[#e50914]">
+                            <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </div>
+                        <h3 className="text-2xl font-black uppercase tracking-tight text-white">No Books Borrowed Yet</h3>
+                        <p className="mt-2 text-xs text-zinc-400 max-w-sm font-light">
+                            Your personal reading rack is currently empty. Explore the global archive to find your next read.
+                        </p>
                         <Link href="/books">
-                            <button className="mt-6 rounded-xl bg-[#8b5cf6] px-8 py-3 font-semibold text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-[#7c3aed] hover:shadow-lg">
+                            <button className="mt-6 rounded-full bg-[#e50914] px-8 py-3.5 text-xs font-bold uppercase tracking-[0.15em] text-white shadow-[0_0_25px_rgba(229,9,20,0.4)] transition-all hover:bg-[#c90812] hover:scale-105 cursor-pointer">
                                 Explore Library
                             </button>
                         </Link>
@@ -100,9 +121,11 @@ export default function MyBorrowsPage() {
                 ) : (
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                         {borrowedBooks.map((book) => (
-                            <div key={book._id} className="flex gap-4 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm transition-all hover:shadow-md">
-
-                                <div className="relative w-28 shrink-0 overflow-hidden rounded-xl bg-gray-100 aspect-[3/4]">
+                            <div
+                                key={book._id}
+                                className="flex gap-5 rounded-2xl border border-zinc-800/80 bg-[#0d0d10] p-5 shadow-sm transition-all hover:border-zinc-700 hover:shadow-lg"
+                            >
+                                <div className="relative w-28 shrink-0 overflow-hidden rounded-xl bg-zinc-900 aspect-[3/4] border border-zinc-800">
                                     <Image
                                         src={book.image}
                                         alt={book.title}
@@ -112,22 +135,30 @@ export default function MyBorrowsPage() {
                                     />
                                 </div>
 
-                                <div className="flex flex-grow flex-col justify-between py-1">
+                                <div className="flex flex-grow flex-col justify-between py-0.5">
                                     <div>
-                                        <span className="mb-1 inline-block rounded bg-purple-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#8b5cf6]">
+                                        <span className="mb-2 inline-block rounded bg-red-950/80 border border-red-800/60 px-2 py-0.5 text-[9px] font-mono font-bold uppercase tracking-wider text-red-300">
                                             {book.category}
                                         </span>
-                                        <h3 className="line-clamp-2 text-lg font-bold text-gray-900 leading-tight">{book.title}</h3>
+                                        <h3 className="line-clamp-2 text-base font-bold text-white leading-tight font-sans">
+                                            {book.title}
+                                        </h3>
 
-                                        <div className="mt-3 text-xs text-gray-500 space-y-1">
-                                            <p>Borrowed: <span className="font-medium text-gray-700">{new Date(book.borrowDate).toLocaleDateString()}</span></p>
-                                            <p>Return by: <span className="font-medium text-red-500">{new Date(book.returnDate).toLocaleDateString()}</span></p>
+                                        <div className="mt-4 text-xs font-mono space-y-1.5 text-zinc-400">
+                                            <p className="flex justify-between">
+                                                <span className="text-zinc-500 uppercase text-[10px]">Borrowed:</span>
+                                                <span className="text-zinc-300">{new Date(book.borrowDate).toLocaleDateString()}</span>
+                                            </p>
+                                            <p className="flex justify-between">
+                                                <span className="text-zinc-500 uppercase text-[10px]">Return By:</span>
+                                                <span className="text-[#e50914] font-bold">{new Date(book.returnDate).toLocaleDateString()}</span>
+                                            </p>
                                         </div>
                                     </div>
 
                                     <button
                                         onClick={() => handleReturn(book._id, book.bookId)}
-                                        className="mt-4 w-full rounded-lg bg-gray-900 py-2 text-sm font-semibold text-white transition-colors hover:bg-red-500"
+                                        className="mt-5 w-full rounded-xl bg-zinc-900 border border-zinc-800 py-2.5 text-xs font-mono font-bold uppercase tracking-wider text-zinc-300 transition-all hover:bg-[#e50914] hover:border-[#e50914] hover:text-white hover:shadow-[0_0_15px_rgba(229,9,20,0.4)] cursor-pointer"
                                     >
                                         Return Book
                                     </button>

@@ -61,27 +61,39 @@ export default function AddBookPage() {
     };
 
     return (
-        <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-white p-4 md:p-8">
-            <div className="flex w-full max-w-[1000px] overflow-hidden rounded-2xl bg-[#18181b] shadow-2xl">
+        <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-[#050505] p-4 md:p-8">
+            <div className="flex w-full max-w-[1000px] overflow-hidden rounded-2xl bg-[#0d0d10] border border-zinc-800/80 shadow-[0_0_60px_rgba(0,0,0,0.9)]">
 
-                {/* Left Side: Inspiration Image */}
+                {/* Left Side: Inspiration Library Image */}
                 <div className="hidden w-2/5 relative lg:block">
                     <div
                         className="absolute inset-0 bg-cover bg-center"
                         style={{ backgroundImage: "url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=2000&auto=format&fit=crop')" }}
                     ></div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#18181b] via-[#18181b]/40 to-transparent"></div>
-                    <div className="absolute bottom-0 left-0 p-10 text-white">
-                        <h2 className="mb-2 text-3xl font-bold">Grow the Library</h2>
-                        <p className="text-sm text-gray-300">Add new literary adventures for everyone to discover and borrow.</p>
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d10] via-[#0d0d10]/40 to-transparent"></div>
+                    <div className="absolute bottom-0 left-0 p-10 text-white z-10">
+                        <span className="text-[10px] font-mono font-bold uppercase tracking-[0.25em] text-[#e50914] mb-2 block">
+                            CURATOR PROTOCOL
+                        </span>
+                        <h2 className="mb-2 text-3xl font-black uppercase tracking-tight text-white font-sans">
+                            Grow the Library
+                        </h2>
+                        <p className="text-xs text-zinc-400 font-light leading-relaxed">
+                            Add new literary adventures for everyone in the community to discover, inspect, and borrow.
+                        </p>
                     </div>
                 </div>
 
                 {/* Right Side: Form */}
-                <div className="w-full p-8 lg:w-3/5 lg:p-12">
+                <div className="w-full p-8 lg:w-3/5 lg:p-12 bg-[#0d0d10]">
                     <div className="mb-8 flex items-center justify-between">
-                        <h1 className="text-3xl font-bold text-white">Add New Book</h1>
-                        <Link href="/books" className="text-sm font-medium text-gray-400 hover:text-[#8b5cf6] transition-colors">
+                        <div>
+                            <span className="text-[10px] font-mono font-bold uppercase tracking-[0.25em] text-[#e50914] block mb-1">
+                                NEW VOLUME ENTRY
+                            </span>
+                            <h1 className="text-3xl font-black uppercase tracking-tight text-white">Add New Book</h1>
+                        </div>
+                        <Link href="/books" className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-400 hover:text-[#e50914] transition-colors">
                             Cancel
                         </Link>
                     </div>
@@ -89,36 +101,36 @@ export default function AddBookPage() {
                     <form onSubmit={handleSubmit} className="space-y-5">
                         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                             <div>
-                                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-400">Book Title</label>
+                                <label className="mb-1.5 block text-xs font-mono font-semibold uppercase tracking-wider text-zinc-400">Book Title</label>
                                 <input
                                     type="text"
                                     name="title"
                                     required
                                     placeholder="e.g. The Great Gatsby"
-                                    className="w-full rounded-xl bg-[#27272a] p-3 text-sm text-white placeholder-gray-500 outline-none transition-all focus:ring-1 focus:ring-[#8b5cf6]"
+                                    className="w-full rounded-xl bg-[#18181b] border border-zinc-800 p-3 text-sm text-white placeholder-zinc-500 outline-none transition-all focus:border-[#e50914] focus:ring-1 focus:ring-[#e50914]"
                                     value={formData.title}
                                     onChange={handleChange}
                                 />
                             </div>
 
                             <div>
-                                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-400">Author</label>
+                                <label className="mb-1.5 block text-xs font-mono font-semibold uppercase tracking-wider text-zinc-400">Author</label>
                                 <input
                                     type="text"
                                     name="author"
                                     required
                                     placeholder="e.g. F. Scott Fitzgerald"
-                                    className="w-full rounded-xl bg-[#27272a] p-3 text-sm text-white placeholder-gray-500 outline-none transition-all focus:ring-1 focus:ring-[#8b5cf6]"
+                                    className="w-full rounded-xl bg-[#18181b] border border-zinc-800 p-3 text-sm text-white placeholder-zinc-500 outline-none transition-all focus:border-[#e50914] focus:ring-1 focus:ring-[#e50914]"
                                     value={formData.author}
                                     onChange={handleChange}
                                 />
                             </div>
 
                             <div>
-                                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-400">Category</label>
+                                <label className="mb-1.5 block text-xs font-mono font-semibold uppercase tracking-wider text-zinc-400">Category</label>
                                 <select
                                     name="category"
-                                    className="w-full rounded-xl bg-[#27272a] p-3 text-sm text-white outline-none transition-all focus:ring-1 focus:ring-[#8b5cf6] appearance-none"
+                                    className="w-full rounded-xl bg-[#18181b] border border-zinc-800 p-3 text-sm text-white outline-none transition-all focus:border-[#e50914] focus:ring-1 focus:ring-[#e50914] appearance-none"
                                     value={formData.category}
                                     onChange={handleChange}
                                 >
@@ -133,25 +145,25 @@ export default function AddBookPage() {
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-400">Rating (1-5)</label>
+                                    <label className="mb-1.5 block text-xs font-mono font-semibold uppercase tracking-wider text-zinc-400">Rating (1-5)</label>
                                     <input
                                         type="number"
                                         name="rating"
                                         min="1" max="5"
                                         required
-                                        className="w-full rounded-xl bg-[#27272a] p-3 text-sm text-white outline-none transition-all focus:ring-1 focus:ring-[#8b5cf6]"
+                                        className="w-full rounded-xl bg-[#18181b] border border-zinc-800 p-3 text-sm text-white outline-none transition-all focus:border-[#e50914] focus:ring-1 focus:ring-[#e50914]"
                                         value={formData.rating}
                                         onChange={handleChange}
                                     />
                                 </div>
                                 <div>
-                                    <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-400">Copies</label>
+                                    <label className="mb-1.5 block text-xs font-mono font-semibold uppercase tracking-wider text-zinc-400">Copies</label>
                                     <input
                                         type="number"
                                         name="copies"
                                         min="1"
                                         required
-                                        className="w-full rounded-xl bg-[#27272a] p-3 text-sm text-white outline-none transition-all focus:ring-1 focus:ring-[#8b5cf6]"
+                                        className="w-full rounded-xl bg-[#18181b] border border-zinc-800 p-3 text-sm text-white outline-none transition-all focus:border-[#e50914] focus:ring-1 focus:ring-[#e50914]"
                                         value={formData.copies}
                                         onChange={handleChange}
                                     />
@@ -160,26 +172,26 @@ export default function AddBookPage() {
                         </div>
 
                         <div>
-                            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-400">Cover Image URL</label>
+                            <label className="mb-1.5 block text-xs font-mono font-semibold uppercase tracking-wider text-zinc-400">Cover Image URL</label>
                             <input
                                 type="url"
                                 name="image"
                                 required
                                 placeholder="https://example.com/book-cover.jpg"
-                                className="w-full rounded-xl bg-[#27272a] p-3 text-sm text-white placeholder-gray-500 outline-none transition-all focus:ring-1 focus:ring-[#8b5cf6]"
+                                className="w-full rounded-xl bg-[#18181b] border border-zinc-800 p-3 text-sm text-white placeholder-zinc-500 outline-none transition-all focus:border-[#e50914] focus:ring-1 focus:ring-[#e50914]"
                                 value={formData.image}
                                 onChange={handleChange}
                             />
                         </div>
 
                         <div>
-                            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-400">Synopsis</label>
+                            <label className="mb-1.5 block text-xs font-mono font-semibold uppercase tracking-wider text-zinc-400">Synopsis</label>
                             <textarea
                                 name="description"
                                 required
                                 rows={3}
                                 placeholder="A brief summary of the book..."
-                                className="w-full rounded-xl bg-[#27272a] p-3 text-sm text-white placeholder-gray-500 outline-none transition-all focus:ring-1 focus:ring-[#8b5cf6] resize-none"
+                                className="w-full rounded-xl bg-[#18181b] border border-zinc-800 p-3 text-sm text-white placeholder-zinc-500 outline-none transition-all focus:border-[#e50914] focus:ring-1 focus:ring-[#e50914] resize-none"
                                 value={formData.description}
                                 onChange={handleChange}
                             ></textarea>
@@ -188,9 +200,9 @@ export default function AddBookPage() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="mt-4 w-full rounded-xl bg-[#8b5cf6] py-3.5 text-sm font-semibold text-white transition-all hover:bg-[#7c3aed] disabled:opacity-50"
+                            className="mt-4 w-full rounded-xl bg-[#e50914] py-3.5 text-xs font-bold uppercase tracking-widest text-white transition-all hover:bg-[#c90812] hover:shadow-[0_0_20px_rgba(229,9,20,0.4)] disabled:opacity-50 cursor-pointer"
                         >
-                            {loading ? "Adding Book..." : "Add Book to Library"}
+                            {loading ? "Adding to Archive..." : "Add Book to Library"}
                         </button>
                     </form>
                 </div>

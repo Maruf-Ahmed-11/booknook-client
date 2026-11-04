@@ -72,9 +72,9 @@ export default function BorrowButton({ bookId, title, image, category, isAvailab
         <button
             onClick={handleBorrow}
             disabled={!isAvailable || loading}
-            className="w-full md:w-auto px-8 py-4 rounded-xl font-bold text-white transition-all shadow-md active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed bg-[#8b5cf6] hover:bg-[#7c3aed] hover:shadow-lg"
+            className="w-full md:w-auto px-9 py-4 rounded-xl font-bold text-xs uppercase tracking-[0.2em] text-white transition-all shadow-[0_0_25px_rgba(229,9,20,0.4)] active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none bg-[#e50914] hover:bg-[#c90812] hover:shadow-[0_0_35px_rgba(229,9,20,0.65)] cursor-pointer"
         >
-            {!isAvailable ? 'Out of Stock' : loading ? 'Processing...' : 'Borrow this Book'}
+            {!isAvailable ? 'Out of Stock' : loading ? 'Reserving...' : 'Borrow this Volume'}
         </button>
     );
 }
