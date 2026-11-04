@@ -88,7 +88,7 @@ export default async function AllBooksPage() {
                         </Link>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-8">
+                    <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:gap-8">
                         {books.map((book) => (
                             <div
                                 key={book._id}
@@ -100,7 +100,7 @@ export default async function AllBooksPage() {
                                         src={book.image}
                                         alt={book.title || "Book cover"}
                                         fill
-                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                         className="object-cover transition-transform duration-700 group-hover:scale-105"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d10] via-transparent to-transparent opacity-80"></div>
