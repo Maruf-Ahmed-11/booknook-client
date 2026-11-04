@@ -12,6 +12,7 @@ export default function Navbar() {
     const router = useRouter();
     const pathname = usePathname();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     const isActive = (path: string) => {
@@ -194,22 +195,63 @@ export default function Navbar() {
                             )}
                         </div>
                     ) : (
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2 sm:gap-3">
                             <Link href="/login">
-                                <button className="rounded-xl px-4 py-2 text-sm font-semibold text-zinc-300 transition-all hover:text-white cursor-pointer">
+                                <button className="rounded-xl px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold text-zinc-300 transition-all hover:text-white cursor-pointer">
                                     Login
                                 </button>
                             </Link>
                             <Link href="/register">
-                                <button className="rounded-xl bg-[#e50914] px-5 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#c90812] hover:shadow-[0_0_20px_rgba(229,9,20,0.4)] cursor-pointer">
+                                <button className="rounded-xl bg-[#e50914] px-4 sm:px-5 py-2 text-xs sm:text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#c90812] hover:shadow-[0_0_20px_rgba(229,9,20,0.4)] cursor-pointer">
                                     Register
                                 </button>
                             </Link>
                         </div>
                     )}
+
+                    {/* Mobile Hamburger Button */}
+                    <button
+                        onClick={() => setIsMobileMenuOpen(prev => !prev)}
+                        aria-label="Toggle navigation menu"
+                        className="md:hidden flex items-center justify-center h-9 w-9 rounded-xl border border-zinc-800 bg-[#141418] text-zinc-300 hover:text-white hover:border-[#e50914] transition-all cursor-pointer"
+                    >
+                        {isMobileMenuOpen ? (
+                            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        ) : (
+                            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        )}
+                    </button>
                 </div>
 
             </div>
+
+            {/* Mobile Navigation Drawer */}
+            {isMobileMenuOpen && (
+                <div className="md:hidden border-t border-zinc-800/80 bg-[#0a0a0d] px-4 py-4 space-y-2 animate-in slide-in-from-top-2 duration-150 shadow-2xl">
+                    {navLinks.map((link) => {
+                        const active = isActive(link.href);
+                        return (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-colors ${
+                                    active
+                                        ? "bg-red-950/40 text-[#e50914] border border-red-900/40 font-semibold"
+                                        : "text-zinc-400 hover:text-white hover:bg-zinc-800/50"
+                                }`}
+                            >
+                                <span>{link.name}</span>
+                                {active && <span className="h-1.5 w-1.5 rounded-full bg-[#e50914] shadow-[0_0_8px_rgba(229,9,20,0.8)]" />}
+                            </Link>
+                        );
+                    })}
+                </div>
+            )}
         </header>
     );
 }

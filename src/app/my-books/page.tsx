@@ -232,7 +232,7 @@ export default function MyBooksPage() {
                     /* 4 Sections Table / Grid Layout */
                     <div className="overflow-hidden rounded-2xl border border-zinc-800/80 bg-[#0d0d10] shadow-[0_0_50px_rgba(0,0,0,0.7)]">
                         <div className="overflow-x-auto">
-                            <table className="w-full text-left border-collapse">
+                            <table className="w-full text-left border-collapse min-w-[650px]">
                                 <thead>
                                     <tr className="border-b border-zinc-800/90 bg-[#121217] text-[11px] font-mono uppercase tracking-[0.2em] text-zinc-400">
                                         {/* Section 1: Books */}
@@ -340,7 +340,7 @@ export default function MyBooksPage() {
             {/* ======================================================== */}
             {isEditOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-                    <div className="relative w-full max-w-lg rounded-2xl bg-[#0d0d10] border border-zinc-800 p-6 md:p-8 shadow-[0_0_60px_rgba(0,0,0,0.9)] animate-in fade-in zoom-in-95 duration-200">
+                    <div className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl bg-[#0d0d10] border border-zinc-800 p-6 md:p-8 shadow-[0_0_60px_rgba(0,0,0,0.9)] animate-in fade-in zoom-in-95 duration-200">
                         <div className="flex items-center justify-between border-b border-zinc-800 pb-4 mb-6">
                             <div>
                                 <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#e50914] block mb-1">

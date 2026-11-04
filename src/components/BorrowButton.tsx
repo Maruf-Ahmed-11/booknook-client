@@ -107,7 +107,7 @@ export default function BorrowButton({ bookId, title, image, category, isAvailab
             {/* Borrow Confirmation Modal */}
             {isModalOpen && session?.user && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm animate-in fade-in duration-200">
-                    <div className="relative w-full max-w-lg rounded-3xl border border-zinc-800 bg-[#0d0d10] p-6 sm:p-8 shadow-[0_0_60px_rgba(0,0,0,0.9)]">
+                    <div className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-3xl border border-zinc-800 bg-[#0d0d10] p-6 sm:p-8 shadow-[0_0_60px_rgba(0,0,0,0.9)]">
 
                         {/* Modal Header */}
                         <div className="flex items-start justify-between border-b border-zinc-800/80 pb-4">

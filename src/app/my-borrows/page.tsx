@@ -145,7 +145,7 @@ export default function MyBorrowsPage() {
                     /* Table showing borrowed books */
                     <div className="overflow-hidden rounded-2xl border border-zinc-800 bg-[#0d0d10] shadow-[0_0_50px_rgba(0,0,0,0.8)]">
                         <div className="overflow-x-auto">
-                            <table className="w-full text-left border-collapse">
+                            <table className="w-full text-left border-collapse min-w-[650px]">
                                 <thead>
                                     <tr className="border-b border-zinc-800 bg-[#121216] text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-400">
                                         <th scope="col" className="px-6 py-4">Image</th>
