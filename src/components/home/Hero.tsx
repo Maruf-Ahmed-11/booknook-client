@@ -1,7 +1,28 @@
 import Link from "next/link";
 import HeroSlider from "./HeroSlider";
 
-export default function Hero() {
+interface BookItem {
+  _id: string;
+}
+
+export default async function Hero() {
+  let bookCount: number | null = null;
+
+  try {
+    const res = await fetch("http://localhost:8000/books", {
+      cache: "no-store",
+      signal: AbortSignal.timeout(1500),
+    });
+    if (res.ok) {
+      const data: BookItem[] = await res.json();
+      if (Array.isArray(data)) {
+        bookCount = data.length;
+      }
+    }
+  } catch {
+    // Database offline fallback
+  }
+
   return (
     <section className="relative pt-16 pb-24 md:pt-20 md:pb-32 border-b border-zinc-900 overflow-hidden">
       {/* Subtle Atmospheric Red Radial Glow */}
@@ -38,7 +59,7 @@ export default function Hero() {
             </h1>
 
             <p className="mt-8 text-base md:text-lg text-zinc-400 max-w-xl font-light leading-relaxed">
-              An uncompromising digital sanctuary for avid readers. Explore rare editions, borrow timeless titles, and catalog your literary journey in cinematic clarity.
+              A neighbourhood online library for avid readers. Explore our curated archive, borrow books for your reading journey, and contribute titles from your personal shelf.
             </p>
 
             {/* CTAs */}
@@ -65,41 +86,66 @@ export default function Hero() {
 
         </div>
 
-        {/* Publishers / Heritage Brand Ticker */}
+        {/* Curated Genres Ribbon (Meaningful Library Categories) */}
         <div className="mt-20 pt-10 border-t border-zinc-900">
-          <p className="text-[10px] uppercase tracking-[0.25em] text-zinc-600 mb-6 font-mono">
-            CURATING EDITIONS FROM RENOWNED HOUSES
-          </p>
-          <div className="flex flex-wrap items-center justify-between gap-6 opacity-60 grayscale hover:grayscale-0 transition-opacity">
-            <span className="text-lg md:text-xl font-serif font-black tracking-widest text-zinc-400">PENGUIN CLASSICS</span>
-            <span className="text-lg md:text-xl font-serif font-bold tracking-widest text-zinc-400">HARPERCOLLINS</span>
-            <span className="text-lg md:text-xl font-serif font-bold tracking-widest text-zinc-400">OXFORD PRESS</span>
-            <span className="text-lg md:text-xl font-serif font-bold tracking-widest text-zinc-400">SIMON &amp; SCHUSTER</span>
-            <span className="text-lg md:text-xl font-serif font-bold tracking-widest text-zinc-400">VINTAGE BOOKS</span>
-            <span className="text-lg md:text-xl font-serif font-bold tracking-widest text-zinc-400">MACMILLAN</span>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+            <p className="text-[10px] uppercase tracking-[0.25em] text-zinc-500 font-mono font-bold">
+              EXPLORE BY POPULAR GENRES &amp; DISCIPLINES
+            </p>
+            <Link
+              href="/books"
+              className="text-[11px] font-mono uppercase tracking-widest text-[#e50914] hover:underline inline-flex items-center gap-1.5"
+            >
+              <span>Browse All Categories</span>
+              <span>→</span>
+            </Link>
+          </div>
+          <div className="flex flex-wrap items-center justify-between gap-6 opacity-75 hover:opacity-100 transition-opacity">
+            <Link href="/books" className="text-lg md:text-xl font-serif font-black tracking-widest text-zinc-300 hover:text-[#e50914] transition-colors">
+              NOVELS &amp; FICTION
+            </Link>
+            <Link href="/books" className="text-lg md:text-xl font-serif font-bold tracking-widest text-zinc-300 hover:text-[#e50914] transition-colors">
+              PHILOSOPHY
+            </Link>
+            <Link href="/books" className="text-lg md:text-xl font-serif font-bold tracking-widest text-zinc-300 hover:text-[#e50914] transition-colors">
+              PSYCHOLOGY
+            </Link>
+            <Link href="/books" className="text-lg md:text-xl font-serif font-bold tracking-widest text-zinc-300 hover:text-[#e50914] transition-colors">
+              SCI-FI &amp; FUTURES
+            </Link>
+            <Link href="/books" className="text-lg md:text-xl font-serif font-bold tracking-widest text-zinc-300 hover:text-[#e50914] transition-colors">
+              MYSTERY &amp; THRILLERS
+            </Link>
+            <Link href="/books" className="text-lg md:text-xl font-serif font-bold tracking-widest text-zinc-300 hover:text-[#e50914] transition-colors">
+              CLASSIC LITERATURE
+            </Link>
           </div>
         </div>
 
-        {/* Metrics & Critic Quote Grid */}
+        {/* Real Library Metrics & Community Pledge Grid */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-4 gap-8 border-t border-zinc-900 pt-10">
           <div className="border-l border-zinc-900 pl-6">
-            <p className="text-4xl lg:text-5xl font-black text-white tracking-tight">50<span className="text-[#e50914]">+</span></p>
-            <p className="text-xs uppercase tracking-widest text-zinc-500 mt-2 font-mono">Archived Editions</p>
+            <p className="text-4xl lg:text-5xl font-black text-white tracking-tight">
+              {bookCount !== null ? bookCount : "20"}<span className="text-[#e50914]">{bookCount !== null ? "" : "+"}</span>
+            </p>
+            <p className="text-xs uppercase tracking-widest text-zinc-500 mt-2 font-mono">
+              {bookCount !== null ? "Live Registered Books" : "Archived Volumes"}
+            </p>
           </div>
           <div className="border-l border-zinc-900 pl-6">
-            <p className="text-4xl lg:text-5xl font-black text-white tracking-tight">08<span className="text-[#e50914]">+</span></p>
-            <p className="text-xs uppercase tracking-widest text-zinc-500 mt-2 font-mono">Literary Genres</p>
+            <p className="text-4xl lg:text-5xl font-black text-white tracking-tight">12<span className="text-[#e50914]">+</span></p>
+            <p className="text-xs uppercase tracking-widest text-zinc-500 mt-2 font-mono">Curated Genres</p>
           </div>
           <div className="border-l border-zinc-900 pl-6">
-            <p className="text-4xl lg:text-5xl font-black text-white tracking-tight">14<span className="text-[#e50914]">D</span></p>
-            <p className="text-xs uppercase tracking-widest text-zinc-500 mt-2 font-mono">Lending Window</p>
+            <p className="text-4xl lg:text-5xl font-black text-white tracking-tight">100<span className="text-[#e50914]">%</span></p>
+            <p className="text-xs uppercase tracking-widest text-zinc-500 mt-2 font-mono">Free Community Lending</p>
           </div>
           <div className="border-l border-zinc-900 pl-6 flex flex-col justify-between">
             <p className="text-xs text-zinc-400 italic leading-relaxed">
-              &ldquo;BookNook elevates reading into a high-art, distraction-free sensory experience.&rdquo;
+              &ldquo;A neighbourhood library on the web: share books from your shelf, explore timeless titles, and borrow with a single click.&rdquo;
             </p>
             <p className="text-[10px] uppercase tracking-widest text-zinc-600 mt-3 font-mono">
-              — MARCUS R. CHEN, CURATOR
+              — BOOKNOOK COMMUNITY PLEDGE
             </p>
           </div>
         </div>

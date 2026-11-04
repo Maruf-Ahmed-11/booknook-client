@@ -33,7 +33,7 @@ const fallbackLatestBooks: Book[] = [
     title: "Meditations",
     author: "Marcus Aurelius",
     category: "Philosophy",
-    image: "https://images.unsplash.com/photo-1532012164546-f432f2e3edd4?q=80&w=800&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=800&auto=format&fit=crop"
   },
   {
     _id: "latest-4",

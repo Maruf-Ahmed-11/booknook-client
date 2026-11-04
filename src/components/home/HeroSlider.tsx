@@ -38,7 +38,7 @@ const slides: SlideData[] = [
     tag: "STOIC PHILOSOPHY",
     title: "Philosophical Inquiries & Ancient Wisdom",
     description: "Personal reflections and foundational ethics that continue to shape sovereign minds.",
-    image: "https://images.unsplash.com/photo-1532012164546-f432f2e3edd4?q=80&w=1000&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=1000&auto=format&fit=crop"
   },
   {
     id: 4,

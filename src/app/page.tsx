@@ -46,7 +46,7 @@ const fallbackBooks: Book[] = [
     category: "Philosophy",
     rating: 5.0,
     copies: 4,
-    image: "https://images.unsplash.com/photo-1532012164546-f432f2e3edd4?q=80&w=800&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=800&auto=format&fit=crop",
     description: "Private stoic reflections of the Roman Emperor on personal virtue, discipline, and emotional sovereignty."
   },
   {
