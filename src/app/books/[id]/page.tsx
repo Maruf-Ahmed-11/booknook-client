@@ -11,6 +11,8 @@ interface Book {
     copies: number;
     image: string;
     description: string;
+    userName?: string;
+    userEmail?: string;
 }
 
 export default async function BookDetailsPage({ params }: { params: Promise<{ id: string }> }) {
@@ -103,6 +105,29 @@ export default async function BookDetailsPage({ params }: { params: Promise<{ id
                                     </span>
                                     <span className="text-[10px] font-mono uppercase text-zinc-500 font-medium">Rating</span>
                                 </div>
+                            </div>
+
+                            {/* Uneditable Curator / Added By Box */}
+                            <div className="my-6 p-4 rounded-xl bg-[#141418] border border-zinc-800/80 flex items-center justify-between gap-4">
+                                <div className="flex items-center gap-3.5">
+                                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-red-950/80 border border-red-800/60 text-[#e50914] font-black font-mono text-sm shadow-inner">
+                                        {(book.userName || book.userEmail || "C").charAt(0).toUpperCase()}
+                                    </div>
+                                    <div>
+                                        <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#e50914] block">
+                                            CURATED &amp; CONTRIBUTED BY
+                                        </span>
+                                        <p className="text-sm font-bold text-white font-sans">
+                                            {book.userName || "Verified Curator"}
+                                        </p>
+                                        <p className="text-xs font-mono text-zinc-400">
+                                            {book.userEmail || "community@booknook.app"}
+                                        </p>
+                                    </div>
+                                </div>
+                                <span className="hidden sm:inline-block text-[10px] font-mono uppercase tracking-wider text-zinc-500 bg-zinc-900 border border-zinc-800 px-2.5 py-1 rounded-md">
+                                    Verified Contributor
+                                </span>
                             </div>
 
                             <div className="my-8 border-t border-b border-zinc-800/80 py-6">

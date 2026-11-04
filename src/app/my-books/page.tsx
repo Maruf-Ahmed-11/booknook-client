@@ -15,6 +15,7 @@ interface Book {
     copies: number;
     image: string;
     description: string;
+    userName?: string;
     userEmail?: string;
 }
 
@@ -352,6 +353,18 @@ export default function MyBooksPage() {
                         </div>
 
                         <form onSubmit={handleSaveEdit} className="space-y-4">
+                            {/* Uneditable Curator Info */}
+                            <div className="grid grid-cols-2 gap-3 p-3 rounded-xl bg-[#141418] border border-zinc-800 text-[11px] font-mono">
+                                <div>
+                                    <span className="text-[9px] uppercase tracking-wider text-zinc-500 block mb-0.5">CURATOR NAME</span>
+                                    <span className="text-zinc-300 font-bold truncate block">{editingBook?.userName || session?.user?.name || "Verified Member"}</span>
+                                </div>
+                                <div>
+                                    <span className="text-[9px] uppercase tracking-wider text-zinc-500 block mb-0.5">CURATOR GMAIL</span>
+                                    <span className="text-zinc-400 truncate block">{editingBook?.userEmail || session?.user?.email}</span>
+                                </div>
+                            </div>
+
                             <div>
                                 <label className="block text-[11px] font-mono uppercase text-zinc-400 mb-1.5">Book Title</label>
                                 <input

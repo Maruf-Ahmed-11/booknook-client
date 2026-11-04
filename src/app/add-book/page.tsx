@@ -60,6 +60,7 @@ export default function AddBookPage() {
                 },
                 body: JSON.stringify({
                     ...formData,
+                    userName: session?.user?.name || "Library Member",
                     userEmail: session?.user?.email || "",
                 }),
             });
@@ -119,6 +120,48 @@ export default function AddBookPage() {
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-5">
+
+                        {/* Uneditable Curator Login Info (Auto-populated & Locked) */}
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 rounded-xl bg-[#141418] p-4 border border-zinc-800/80">
+                            <div>
+                                <div className="flex items-center justify-between mb-1.5">
+                                    <label className="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-400">
+                                        Curator Name
+                                    </label>
+                                    <span className="text-[9px] font-mono uppercase text-[#e50914] bg-red-950/60 border border-red-900/40 px-1.5 py-0.5 rounded">
+                                        🔒 Auto-Generated
+                                    </span>
+                                </div>
+                                <input
+                                    type="text"
+                                    readOnly
+                                    disabled
+                                    value={session?.user?.name || "Library Member"}
+                                    className="w-full rounded-lg bg-[#0d0d10] border border-zinc-800/80 p-2.5 text-xs text-zinc-300 font-mono cursor-not-allowed select-none opacity-85"
+                                    title="Uneditable: Automatically generated from your login session"
+                                />
+                            </div>
+
+                            <div>
+                                <div className="flex items-center justify-between mb-1.5">
+                                    <label className="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-400">
+                                        Curator Email
+                                    </label>
+                                    <span className="text-[9px] font-mono uppercase text-[#e50914] bg-red-950/60 border border-red-900/40 px-1.5 py-0.5 rounded">
+                                        🔒 Auto-Generated
+                                    </span>
+                                </div>
+                                <input
+                                    type="email"
+                                    readOnly
+                                    disabled
+                                    value={session?.user?.email || "Loading..."}
+                                    className="w-full rounded-lg bg-[#0d0d10] border border-zinc-800/80 p-2.5 text-xs text-zinc-300 font-mono cursor-not-allowed select-none opacity-85"
+                                    title="Uneditable: Automatically generated from your login session"
+                                />
+                            </div>
+                        </div>
+
                         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                             <div>
                                 <label className="mb-1.5 block text-xs font-mono font-semibold uppercase tracking-wider text-zinc-400">Book Title</label>

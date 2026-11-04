@@ -10,6 +10,8 @@ interface Book {
     copies: number;
     image: string;
     description: string;
+    userName?: string;
+    userEmail?: string;
 }
 
 export default async function AllBooksPage() {
@@ -121,7 +123,15 @@ export default async function AllBooksPage() {
                                     <h3 className="line-clamp-1 text-lg font-bold text-white group-hover:text-red-400 transition-colors" title={book.title}>
                                         {book.title}
                                     </h3>
-                                    <p className="mb-4 mt-1 text-xs font-mono text-zinc-400 line-clamp-1">{book.author}</p>
+                                    <p className="mt-1 text-xs font-mono text-zinc-400 line-clamp-1">By {book.author}</p>
+
+                                    {/* Curator / Added By Tag */}
+                                    <div className="mt-3 pt-2.5 border-t border-zinc-800/60 flex items-center gap-1.5 text-[10px] font-mono text-zinc-400">
+                                        <span className="text-[#e50914] font-bold">✦</span>
+                                        <span className="truncate">
+                                            Curator: {book.userName || book.userEmail || "BookNook Archive"}
+                                        </span>
+                                    </div>
 
                                     {/* Footer (Stock & Button) */}
                                     <div className="mt-auto flex items-center justify-between border-t border-zinc-800/80 pt-4">

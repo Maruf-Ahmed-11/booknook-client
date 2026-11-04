@@ -13,6 +13,8 @@ interface Book {
   copies: number;
   image: string;
   description: string;
+  userName?: string;
+  userEmail?: string;
 }
 
 interface SelectedArchiveProps {
@@ -168,6 +170,12 @@ export default function SelectedArchive({ books }: SelectedArchiveProps) {
                   <span className="text-zinc-500 uppercase tracking-widest text-[10px]">Free Lending</span>
                 </div>
 
+                {/* Curator Name & Email Tag */}
+                <div className="mt-2.5 flex items-center gap-1.5 text-[10px] font-mono text-zinc-400 truncate">
+                  <span className="text-[#e50914]">✦</span>
+                  <span className="truncate">By: {book.userName || book.userEmail || "BookNook Curator"}</span>
+                </div>
+
                 {/* Bottom Action Button */}
                 <div className="mt-5 pt-4 border-t border-zinc-800/80">
                   <Link
@@ -241,6 +249,20 @@ export default function SelectedArchive({ books }: SelectedArchiveProps) {
                   <p className="text-xs text-zinc-300 leading-relaxed font-light">
                     {activeModalBook.description || "No full synopsis provided for this title."}
                   </p>
+                </div>
+
+                {/* Curator Attribution */}
+                <div className="mt-4 p-3.5 rounded-xl bg-zinc-900/90 border border-zinc-800 flex items-center justify-between gap-3 text-[11px] font-mono">
+                  <div>
+                    <span className="text-[9px] uppercase tracking-wider text-zinc-500 block">
+                      CURATED &amp; ADDED BY
+                    </span>
+                    <span className="text-white font-bold">{activeModalBook.userName || "Verified Curator"}</span>
+                    <span className="text-zinc-400 ml-2 font-mono">({activeModalBook.userEmail || "community@booknook.app"})</span>
+                  </div>
+                  <span className="text-[9px] font-mono text-[#e50914] bg-red-950/60 border border-red-900/40 px-2 py-0.5 rounded shrink-0">
+                    🔒 Verified
+                  </span>
                 </div>
 
                 {/* Modal CTAs */}

@@ -10,6 +10,8 @@ interface Book {
   copies?: number;
   image: string;
   description?: string;
+  userName?: string;
+  userEmail?: string;
 }
 
 // 6 Fallback books in case database is offline or empty during dev
@@ -136,6 +138,12 @@ export default async function NewArrivals() {
                   {book.title}
                 </h3>
                 <p className="text-xs text-zinc-400 mt-1 font-mono">{book.author}</p>
+
+                {/* Curator Tag */}
+                <div className="mt-2.5 flex items-center gap-1.5 text-[10px] font-mono text-zinc-400 truncate">
+                  <span className="text-[#e50914]">✦</span>
+                  <span className="truncate">Curated by: {book.userName || book.userEmail || "BookNook Archive"}</span>
+                </div>
 
                 {/* View Details Button */}
                 <div className="mt-auto pt-6 border-t border-zinc-800/80">
