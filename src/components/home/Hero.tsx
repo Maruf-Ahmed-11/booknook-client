@@ -1,10 +1,11 @@
 import Link from "next/link";
+import HeroSlider from "./HeroSlider";
 
 export default function Hero() {
   return (
-    <section className="relative pt-16 pb-24 md:pt-24 md:pb-36 border-b border-zinc-900 overflow-hidden">
+    <section className="relative pt-16 pb-24 md:pt-20 md:pb-32 border-b border-zinc-900 overflow-hidden">
       {/* Subtle Atmospheric Red Radial Glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-[radial-gradient(ellipse_at_center,rgba(229,9,20,0.14),transparent_70%)] pointer-events-none blur-3xl"></div>
+      <div className="absolute top-1/4 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-[radial-gradient(ellipse_at_center,rgba(229,9,20,0.14),transparent_70%)] pointer-events-none blur-3xl"></div>
 
       <div className="container mx-auto px-4 md:px-8 max-w-7xl relative z-10">
 
@@ -21,37 +22,47 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* Big Lumora Display Headline */}
-        <div className="max-w-5xl">
-          <p className="text-xs md:text-sm font-bold uppercase tracking-[0.3em] text-[#e50914] mb-3">
-            BOOKNOOK LITERARY EDITIONS
-          </p>
-          <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter text-white leading-[0.9] font-sans">
-            MISTER <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-100 to-zinc-500">
-              BOOKNOOK
-            </span>
-          </h1>
+        {/* 2-Column Main Section: Text on Left, Swiper Slider on Right */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
 
-          <p className="mt-8 text-base md:text-xl text-zinc-400 max-w-2xl font-light leading-relaxed">
-            An uncompromising digital sanctuary for avid readers. Explore rare editions, borrow timeless titles, and catalog your literary journey in cinematic clarity.
-          </p>
+          {/* Left Column: Big Display Headline & CTAs */}
+          <div className="lg:col-span-7">
+            <p className="text-xs md:text-sm font-bold uppercase tracking-[0.3em] text-[#e50914] mb-3">
+              BOOKNOOK LITERARY EDITIONS
+            </p>
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter text-white leading-[0.9] font-sans">
+              MISTER <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-100 to-zinc-500">
+                BOOKNOOK
+              </span>
+            </h1>
 
-          {/* CTAs */}
-          <div className="mt-10 flex flex-wrap items-center gap-4">
-            <Link
-              href="/books"
-              className="px-8 py-4 bg-[#e50914] text-white font-bold text-xs uppercase tracking-[0.2em] rounded-full hover:bg-[#c90812] transition-all duration-300 shadow-[0_0_30px_rgba(229,9,20,0.45)] hover:shadow-[0_0_40px_rgba(229,9,20,0.7)] hover:scale-105"
-            >
-              Explore All Books
-            </Link>
-            <Link
-              href="/add-book"
-              className="px-8 py-4 bg-zinc-950/80 border border-zinc-800 text-zinc-300 font-bold text-xs uppercase tracking-[0.2em] rounded-full hover:bg-zinc-900 hover:text-white hover:border-zinc-700 transition-all duration-300"
-            >
-              Contribute a Book
-            </Link>
+            <p className="mt-8 text-base md:text-lg text-zinc-400 max-w-xl font-light leading-relaxed">
+              An uncompromising digital sanctuary for avid readers. Explore rare editions, borrow timeless titles, and catalog your literary journey in cinematic clarity.
+            </p>
+
+            {/* CTAs */}
+            <div className="mt-10 flex flex-wrap items-center gap-4">
+              <Link
+                href="/books"
+                className="px-8 py-4 bg-[#e50914] text-white font-bold text-xs uppercase tracking-[0.2em] rounded-full hover:bg-[#c90812] transition-all duration-300 shadow-[0_0_30px_rgba(229,9,20,0.45)] hover:shadow-[0_0_40px_rgba(229,9,20,0.7)] hover:scale-105 cursor-pointer"
+              >
+                Explore All Books
+              </Link>
+              <Link
+                href="/add-book"
+                className="px-8 py-4 bg-zinc-950/80 border border-zinc-800 text-zinc-300 font-bold text-xs uppercase tracking-[0.2em] rounded-full hover:bg-zinc-900 hover:text-white hover:border-zinc-700 transition-all duration-300 cursor-pointer"
+              >
+                Contribute a Book
+              </Link>
+            </div>
           </div>
+
+          {/* Right Column: Swiper.js Carousel Slider */}
+          <div className="lg:col-span-5 w-full">
+            <HeroSlider />
+          </div>
+
         </div>
 
         {/* Publishers / Heritage Brand Ticker */}
@@ -97,4 +108,3 @@ export default function Hero() {
     </section>
   );
 }
-

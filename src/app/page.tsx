@@ -1,4 +1,5 @@
 import Hero from "@/components/home/Hero";
+import NewArrivals from "@/components/home/NewArrivals";
 import CurationPhilosophy from "@/components/home/CurationPhilosophy";
 import SelectedArchive from "@/components/home/SelectedArchive";
 import LiteraryPromise from "@/components/home/LiteraryPromise";
@@ -80,22 +81,25 @@ export default async function HomePage() {
 
   return (
     <div className="bg-[#050505] text-white selection:bg-[#e50914] selection:text-white overflow-hidden">
-      {/* 1. Hero Showcase */}
+      {/* 1. Hero Showcase with Swiper.js Slider on Right */}
       <Hero />
 
-      {/* 2. Curation Philosophy & Purity Ratings */}
+      {/* 2. New Arrivals (Dynamic 6 Latest Books with MongoDB sort & limit) */}
+      <NewArrivals />
+
+      {/* 3. Curation Philosophy & Purity Ratings */}
       <CurationPhilosophy />
 
-      {/* 3. Selected Archive Grid */}
+      {/* 4. Selected Archive Grid */}
       <SelectedArchive books={displayBooks} />
 
-      {/* 4. Cinematic Quote Banner */}
+      {/* 5. Cinematic Quote Banner */}
       <LiteraryPromise />
 
-      {/* 5. 4-Step Borrowing Protocol */}
+      {/* 6. 4-Step Borrowing Protocol */}
       <BorrowingProtocol />
 
-      {/* 6. Frequently Asked Questions */}
+      {/* 7. Frequently Asked Questions */}
       <FrequentInquiries />
     </div>
   );
