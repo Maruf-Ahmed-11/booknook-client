@@ -18,6 +18,21 @@ interface Book {
     userEmail?: string;
 }
 
+const CATEGORIES = [
+    "Novel",
+    "Philosophy",
+    "Psychology",
+    "Mystery",
+    "Thriller",
+    "Sci-Fi",
+    "Fantasy",
+    "History",
+    "Biography",
+    "Science",
+    "Classic Literature",
+    "Self-Help"
+];
+
 export default function MyBooksPage() {
     const { data: session, isPending } = authClient.useSession();
     const [books, setBooks] = useState<Book[]>([]);
@@ -362,16 +377,15 @@ export default function MyBooksPage() {
                                 <div>
                                     <label className="block text-[11px] font-mono uppercase text-zinc-400 mb-1.5">Category</label>
                                     <select
-                                        className="w-full rounded-xl bg-[#18181b] border border-zinc-800 p-3 text-sm text-white outline-none focus:border-[#e50914] focus:ring-1 focus:ring-[#e50914]"
+                                        className="w-full rounded-xl bg-[#18181b] border border-zinc-800 p-3 text-sm text-white outline-none focus:border-[#e50914] focus:ring-1 focus:ring-[#e50914] cursor-pointer"
                                         value={editForm.category}
                                         onChange={(e) => setEditForm(prev => ({ ...prev, category: e.target.value }))}
                                     >
-                                        <option value="Novel">Novel</option>
-                                        <option value="Thriller">Thriller</option>
-                                        <option value="Sci-Fi">Sci-Fi</option>
-                                        <option value="History">History</option>
-                                        <option value="Fantasy">Fantasy</option>
-                                        <option value="Biography">Biography</option>
+                                        {CATEGORIES.map((cat) => (
+                                            <option key={cat} value={cat} className="bg-[#18181b] text-white">
+                                                {cat}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
                             </div>

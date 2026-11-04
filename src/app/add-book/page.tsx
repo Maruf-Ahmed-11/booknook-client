@@ -6,6 +6,21 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 
+export const BOOK_CATEGORIES = [
+    "Novel",
+    "Philosophy",
+    "Psychology",
+    "Mystery",
+    "Thriller",
+    "Sci-Fi",
+    "Fantasy",
+    "History",
+    "Biography",
+    "Science",
+    "Classic Literature",
+    "Self-Help"
+];
+
 export default function AddBookPage() {
     const router = useRouter();
     const { data: session } = authClient.useSession();
@@ -133,19 +148,20 @@ export default function AddBookPage() {
 
                             <div>
                                 <label className="mb-1.5 block text-xs font-mono font-semibold uppercase tracking-wider text-zinc-400">Category</label>
-                                <select
-                                    name="category"
-                                    className="w-full rounded-xl bg-[#18181b] border border-zinc-800 p-3 text-sm text-white outline-none transition-all focus:border-[#e50914] focus:ring-1 focus:ring-[#e50914] appearance-none"
-                                    value={formData.category}
-                                    onChange={handleChange}
-                                >
-                                    <option value="Novel">Novel</option>
-                                    <option value="Thriller">Thriller</option>
-                                    <option value="Sci-Fi">Sci-Fi</option>
-                                    <option value="History">History</option>
-                                    <option value="Fantasy">Fantasy</option>
-                                    <option value="Biography">Biography</option>
-                                </select>
+                                <div className="relative">
+                                    <select
+                                        name="category"
+                                        className="w-full rounded-xl bg-[#18181b] border border-zinc-800 p-3 text-sm text-white outline-none transition-all focus:border-[#e50914] focus:ring-1 focus:ring-[#e50914] cursor-pointer"
+                                        value={formData.category}
+                                        onChange={handleChange}
+                                    >
+                                        {BOOK_CATEGORIES.map((cat) => (
+                                            <option key={cat} value={cat} className="bg-[#18181b] text-white py-1">
+                                                {cat}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
