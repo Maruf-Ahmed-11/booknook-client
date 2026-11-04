@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
@@ -9,6 +10,31 @@ import Image from "next/image";
 export default function Navbar() {
     const { data: session, isPending } = authClient.useSession();
     const router = useRouter();
+
+    // Automatically sync Express JWT to localStorage for Google/GitHub/Email logins
+    useEffect(() => {
+        const syncJWT = async () => {
+            if (session?.user?.email) {
+                const existingToken = localStorage.getItem("access-token");
+                if (!existingToken) {
+                    try {
+                        const res = await fetch("http://localhost:8000/jwt", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ email: session.user.email }),
+                        });
+                        const data = await res.json();
+                        if (data.token) {
+                            localStorage.setItem("access-token", data.token);
+                        }
+                    } catch (error) {
+                        console.error("Failed to auto-sync JWT:", error);
+                    }
+                }
+            }
+        };
+        syncJWT();
+    }, [session]);
 
     const handleLogout = async () => {
         await authClient.signOut({
