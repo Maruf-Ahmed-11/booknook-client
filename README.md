@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📚 BookNook - Modern Library & Book Borrowing Platform
 
-## Getting Started
+Welcome to **BookNook**, a full-stack, responsive book borrowing and management web application designed for passionate readers, curators, and collectors. BookNook delivers an elegant, user-friendly reading and borrowing experience with authentication, collection tracking, and real-time inventory management.
 
-First, run the development server:
+---
 
+## 🌐 Live Site
+- **Live URL**: [https://booknook-client-11.vercel.app](https://booknook-client-11.vercel.app)
+
+---
+
+## ✨ Key Features
+
+- **📖 Extensive Book Exploration & Categorization**: Browse and discover books across a diverse spectrum of genres (Philosophy, Psychology, Sci-Fi, Thriller, Fantasy, Novel, History, and more) with real-time stock availability and a 1–10 rating system.
+- **🤝 Interactive One-Click Borrowing System**: Borrow books seamlessly through an intuitive modal with pre-filled user identity verification, automatic quantity updates, and return date scheduling.
+- **📋 Personal User Dashboard ("My Borrows" & "My Books")**: Dedicated, responsive tables allowing users to track their currently borrowed books with countdown dates and a one-click "Return Book" action, as well as manage books they have contributed to the catalog.
+- **🔒 Robust Authentication & Session Management**: Secure authentication powered by Better-Auth with JWT support, offering both email/password signup and instant OAuth login (Google & GitHub).
+- **✍️ Full Book Management (CRUD)**: Authorized users can contribute new book listings with image preview, authors, ratings, stock counts, categories, and detailed synopses, with full update and delete capabilities.
+- **🎨 Modern, Responsive & Polished UI**: Built using Next.js 16 App Router, Tailwind CSS, Lucide icons, Swiper carousels, responsive tables, custom loading spinners, and an interactive 404 Not Found page tailored for mobile, tablet, and desktop viewports.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router, Server & Client Components)
+- **Library**: [React 19](https://react.dev/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Icons & UI**: [Lucide React](https://lucide.dev/), [Base UI](https://base-ui.com/), [Swiper](https://swiperjs.com/)
+- **Authentication**: [Better-Auth](https://www.better-auth.com/) (Email/Password, Google OAuth, GitHub OAuth, JWT)
+- **Database**: [MongoDB](https://www.mongodb.com/) (via native client and Mongo Adapter)
+- **Notifications**: [React Hot Toast](https://react-hot-toast.com/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+
+---
+
+## 🚀 Getting Started
+
+Follow these steps to run BookNook locally:
+
+### 1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/your-username/booknook-client.git
+cd booknook-client
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Setup Environment Variables
+Create a `.env` file in the root directory and configure the following variables:
+```env
+MONGODB_URI=your_mongodb_connection_string
+BETTER_AUTH_SECRET=your_better_auth_secret
+BETTER_AUTH_URL=http://localhost:3000
+NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:3000
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
 
-## Learn More
+NEXT_PUBLIC_API_URI=http://localhost:8000
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 4. Run the development server
+```bash
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📄 License
+This project is open-source and available under the [MIT License](LICENSE).
