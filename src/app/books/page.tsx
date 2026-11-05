@@ -64,7 +64,7 @@ export default async function AllBooksPage() {
                             Explore our curated archive of {books.length} {books.length === 1 ? 'registered volume' : 'registered volumes'}.
                         </p>
                     </div>
-                    <Link href="/add-book">
+                    <Link href="/add-book" prefetch={false}>
                         <button className="rounded-full bg-[#e50914] px-7 py-3.5 text-xs font-bold uppercase tracking-[0.15em] text-white shadow-[0_0_25px_rgba(229,9,20,0.45)] transition-all hover:bg-[#c90812] hover:shadow-[0_0_35px_rgba(229,9,20,0.65)] hover:scale-105 cursor-pointer">
                             + Add New Book
                         </button>
@@ -81,7 +81,7 @@ export default async function AllBooksPage() {
                         </div>
                         <h3 className="text-2xl font-black uppercase tracking-tight text-white">No Books Archived Yet</h3>
                         <p className="mt-2 text-xs text-zinc-400 max-w-sm">The digital library is currently awaiting its first contribution.</p>
-                        <Link href="/add-book" className="mt-6">
+                        <Link href="/add-book" prefetch={false} className="mt-6">
                             <button className="rounded-full bg-[#e50914] px-6 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-md hover:bg-[#c90812]">
                                 Contribute First Book
                             </button>

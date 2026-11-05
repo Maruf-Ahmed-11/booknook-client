@@ -72,6 +72,7 @@ export default async function Hero() {
               </Link>
               <Link
                 href="/add-book"
+                prefetch={false}
                 className="px-8 py-4 bg-zinc-950/80 border border-zinc-800 text-zinc-300 font-bold text-xs uppercase tracking-[0.2em] rounded-full hover:bg-zinc-900 hover:text-white hover:border-zinc-700 transition-all duration-300 cursor-pointer"
               >
                 Contribute a Book

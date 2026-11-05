@@ -106,6 +106,7 @@ export default function Navbar() {
                             <Link
                                 key={link.href}
                                 href={link.href}
+                                prefetch={false}
                                 className={`relative py-1 transition-colors ${
                                     active
                                         ? "text-[#e50914] font-semibold"
@@ -238,6 +239,7 @@ export default function Navbar() {
                             <Link
                                 key={link.href}
                                 href={link.href}
+                                prefetch={false}
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-colors ${
                                     active
