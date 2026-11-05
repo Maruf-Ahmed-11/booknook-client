@@ -62,6 +62,7 @@ export default function RegisterPage() {
                 await fetchAndStoreJWT(email);
                 toast.success("Account created successfully!");
                 router.push("/");
+                router.refresh();
             },
             onError: (ctx) => {
                 toast.error(ctx.error.message || "Failed to create account");

@@ -15,7 +15,7 @@ interface BorrowButtonProps {
 }
 
 export default function BorrowButton({ bookId, title, image, category, isAvailable }: BorrowButtonProps) {
-    const { data: session } = authClient.useSession();
+    const { data: session, isPending } = authClient.useSession();
     const router = useRouter();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,6 +32,7 @@ export default function BorrowButton({ bookId, title, image, category, isAvailab
     const todayStr = new Date().toISOString().split("T")[0];
 
     const handleOpenModal = () => {
+        if (isPending) return;
         if (!session?.user) {
             toast.error("Please log in to borrow books");
             router.push("/login");
@@ -98,7 +99,7 @@ export default function BorrowButton({ bookId, title, image, category, isAvailab
         <>
             <button
                 onClick={handleOpenModal}
-                disabled={!isAvailable}
+                disabled={!isAvailable || isPending}
                 className="w-full md:w-auto px-9 py-4 rounded-xl font-bold text-xs uppercase tracking-[0.2em] text-white transition-all shadow-[0_0_25px_rgba(229,9,20,0.4)] active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none bg-[#e50914] hover:bg-[#c90812] hover:shadow-[0_0_35px_rgba(229,9,20,0.65)] cursor-pointer"
             >
                 {!isAvailable ? "Out of Stock" : "Borrow This Book"}

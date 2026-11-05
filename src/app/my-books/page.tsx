@@ -162,13 +162,13 @@ export default function MyBooksPage() {
             });
 
             if (res.ok) {
-                toast.success("Book successfully removed from library archive and database");
+                toast.success("Book deleted successfully!");
                 // Immediately excise the book from the UI state
                 setBooks(prev => prev.filter(b => b._id !== targetId));
                 setBookToDelete(null);
             } else {
                 const errorData = await res.json().catch(() => ({}));
-                toast.error(errorData.message || "Failed to delete book from database");
+                toast.error(errorData.message || "Failed to delete book");
             }
         } catch {
             toast.error("An error occurred while deleting the book");
@@ -492,14 +492,14 @@ export default function MyBooksPage() {
                             </div>
                             <div>
                                 <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#e50914] block mb-0.5">
-                                    DATABASE DELETION
+                                    CONFIRM DELETION
                                 </span>
                                 <h3 className="text-lg font-black uppercase text-white tracking-tight">Confirm Removal</h3>
                             </div>
                         </div>
 
                         <p className="text-xs text-zinc-300 font-light leading-relaxed mb-4">
-                            Are you sure you want to permanently delete this book from the BookNook library archive and database?
+                            Are you sure you want to permanently delete this book from your collection? This action cannot be undone.
                         </p>
 
                         {/* Book Preview Card */}

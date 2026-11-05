@@ -37,6 +37,7 @@ export default function LoginPage() {
                 await fetchAndStoreJWT(email);
                 toast.success("Logged in successfully!");
                 router.push("/");
+                router.refresh();
             },
             onError: (ctx) => {
                 toast.error(ctx.error.message || "Failed to log in");

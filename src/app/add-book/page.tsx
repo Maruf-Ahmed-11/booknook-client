@@ -55,7 +55,7 @@ export default function AddBookPage() {
         }
 
         setLoading(true);
-        const toastId = toast.loading("Recording volume into MongoDB database...");
+        const toastId = toast.loading("Adding book to library...");
 
         try {
             const token = localStorage.getItem("access-token");
@@ -74,15 +74,15 @@ export default function AddBookPage() {
             });
 
             if (res.ok) {
-                toast.success("Book successfully archived in MongoDB database!", { id: toastId });
+                toast.success("Book added successfully!", { id: toastId });
                 router.push("/my-books");
                 router.refresh();
             } else {
                 const errorData = await res.json();
-                toast.error(errorData.message || "Failed to add book to MongoDB database", { id: toastId });
+                toast.error(errorData.message || "Failed to add book", { id: toastId });
             }
         } catch (error) {
-            toast.error("An error occurred while connecting to database", { id: toastId });
+            toast.error("An error occurred while adding the book", { id: toastId });
             console.error(error);
         } finally {
             setLoading(false);
@@ -300,7 +300,7 @@ export default function AddBookPage() {
                             disabled={loading}
                             className="mt-4 w-full rounded-xl bg-[#e50914] py-3.5 text-xs font-bold uppercase tracking-widest text-white transition-all hover:bg-[#c90812] hover:shadow-[0_0_20px_rgba(229,9,20,0.4)] disabled:opacity-50 cursor-pointer"
                         >
-                            {loading ? "Recording in MongoDB..." : "Add Book to Library"}
+                            {loading ? "Adding Book..." : "Add Book to Library"}
                         </button>
                     </form>
                 </div>
