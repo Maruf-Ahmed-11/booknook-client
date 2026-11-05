@@ -7,7 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { authClient } from "@/lib/auth-client";
 
-export const BOOK_CATEGORIES = [
+const BOOK_CATEGORIES = [
     "Novel",
     "Philosophy",
     "Psychology",
