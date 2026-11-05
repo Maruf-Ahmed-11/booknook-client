@@ -59,7 +59,7 @@ export default function BorrowButton({ bookId, title, image, category, isAvailab
             const borrowDate = new Date().toISOString();
             const formattedReturnDate = new Date(returnDate).toISOString();
 
-            const res = await fetch("http://localhost:8000/borrows", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URI}/borrows`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

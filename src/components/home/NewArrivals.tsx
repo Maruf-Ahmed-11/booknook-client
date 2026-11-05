@@ -64,8 +64,8 @@ export default async function NewArrivals() {
   let books: Book[] = fallbackLatestBooks;
 
   try {
-    // Queries MongoDB newest books first with sort and limit (http://localhost:8000/books?sort=newest&limit=6)
-    const res = await fetch("http://localhost:8000/books?sort=newest&limit=6", {
+    // Queries MongoDB newest books first with sort and limit
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URI}/books?sort=newest&limit=6`, {
       cache: "no-store",
       signal: AbortSignal.timeout(1500),
     });

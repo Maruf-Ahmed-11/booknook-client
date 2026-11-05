@@ -9,7 +9,7 @@ export default async function Hero() {
   let bookCount: number | null = null;
 
   try {
-    const res = await fetch("http://localhost:8000/books", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URI}/books`, {
       cache: "no-store",
       signal: AbortSignal.timeout(1500),
     });

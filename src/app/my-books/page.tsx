@@ -64,7 +64,7 @@ export default function MyBooksPage() {
 
             try {
                 const token = localStorage.getItem("access-token");
-                const res = await fetch("http://localhost:8000/books", {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URI}/books`, {
                     headers: {
                         "authorization": `Bearer ${token}`
                     }
@@ -111,7 +111,7 @@ export default function MyBooksPage() {
         setActionLoading(true);
         try {
             const token = localStorage.getItem("access-token");
-            const res = await fetch(`http://localhost:8000/books/${editingBook._id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URI}/books/${editingBook._id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -154,7 +154,7 @@ export default function MyBooksPage() {
 
         try {
             const token = localStorage.getItem("access-token");
-            const res = await fetch(`http://localhost:8000/books/${targetId}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URI}/books/${targetId}`, {
                 method: "DELETE",
                 headers: {
                     "authorization": `Bearer ${token}`

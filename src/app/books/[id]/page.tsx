@@ -24,7 +24,7 @@ export default async function BookDetailsPage({ params }: { params: Promise<{ id
     let isError = false;
 
     try {
-        const res = await fetch(`http://localhost:8000/books/${id}`, { cache: "no-store" });
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URI}/books/${id}`, { cache: "no-store" });
         if (!res.ok) {
             isError = true;
         } else {

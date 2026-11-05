@@ -29,7 +29,7 @@ export default function MyBorrowsPage() {
 
             try {
                 const token = localStorage.getItem("access-token");
-                const res = await fetch(`http://localhost:8000/borrows?email=${encodeURIComponent(session.user.email)}`, {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URI}/borrows?email=${encodeURIComponent(session.user.email)}`, {
                     headers: {
                         "authorization": `Bearer ${token}`
                     }
@@ -55,7 +55,7 @@ export default function MyBorrowsPage() {
         setReturningId(borrowId);
         try {
             const token = localStorage.getItem("access-token");
-            const res = await fetch(`http://localhost:8000/borrows/${borrowId}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URI}/borrows/${borrowId}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",

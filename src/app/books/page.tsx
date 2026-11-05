@@ -19,7 +19,7 @@ export default async function AllBooksPage() {
     let isError = false;
 
     try {
-        const res = await fetch("http://localhost:8000/books", { cache: "no-store" });
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URI}/books`, { cache: "no-store" });
         if (!res.ok) {
             isError = true;
         } else {

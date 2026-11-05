@@ -46,7 +46,7 @@ export default function CurationPhilosophy() {
 
     async function loadCollectionRatings() {
       try {
-        const res = await fetch("http://localhost:8000/books");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URI}/books`);
         if (!res.ok) return;
 
         const liveBooks: Book[] = await res.json();
